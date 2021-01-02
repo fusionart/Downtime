@@ -57,7 +57,7 @@ public class ActionPanel extends JPanel {
 	}
 
 	public ActionPanel() {
-		setSize(575, 600);
+		setSize(575, 635);
 
 		DatePickerSettings dateSettings = new DatePickerSettings(Base.LOCALE);
 		dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
@@ -66,6 +66,7 @@ public class ActionPanel extends JPanel {
 		TimePickerSettings timeSettings = new TimePickerSettings(Base.LOCALE);
 		timeSettings.setColor(TimeArea.TimePickerTextValidTime, Color.blue);
 		timeSettings.initialTime = LocalTime.now();
+		timeSettings.setDisplaySpinnerButtons(true);
 		setLayout(new BorderLayout(0, 0));
 
 		JPanel pnlAction = new JPanel();
@@ -109,6 +110,7 @@ public class ActionPanel extends JPanel {
 		gbc_cboStartDate.gridx = 1;
 		gbc_cboStartDate.gridy = 0;
 		pnlStartDate.add(cboStartDate, gbc_cboStartDate);
+		cboStartDate.setDateToToday();
 
 		JPanel pnlStartTime = new JPanel();
 		pnlStartTime.setBackground(new Color(255, 255, 255, 0));
@@ -190,6 +192,7 @@ public class ActionPanel extends JPanel {
 		endTimeSettings.setColor(TimeArea.TimePickerTextValidTime, Color.blue);
 		// timeSettings.fontValidTime(Base.DEFAULT_FONT);
 		endTimeSettings.initialTime = LocalTime.now();
+		endTimeSettings.setDisplaySpinnerButtons(true);
 
 		JLabel lblEndTime = new JLabel("Час");
 		lblEndTime.setFont(Base.DEFAULT_FONT);
@@ -271,7 +274,7 @@ public class ActionPanel extends JPanel {
 
 		JPanel pnlRecommendation = new JPanel();
 		pnlRecommendation.setBackground(new Color(255, 255, 255, 0));
-		pnlRecommendation.setBounds(15, 366, 265, 111);
+		pnlRecommendation.setBounds(290, 245, 265, 111);
 		pnlAction.add(pnlRecommendation);
 		GridBagLayout gbl_pnlRecommendation = new GridBagLayout();
 		gbl_pnlRecommendation.columnWidths = new int[] { 265, 0 };
@@ -302,17 +305,17 @@ public class ActionPanel extends JPanel {
 		scrollPane_1.setViewportView(txtActionRecommendation);
 		txtActionRecommendation.setRows(3);
 		txtActionRecommendation.setFont(Base.DEFAULT_FONT);
-
-		JPanel pnlAccepted = new JPanel();
-		pnlAccepted.setBackground(new Color(255, 255, 255, 0));
-		pnlAccepted.setBounds(290, 161, 265, 280);
-		pnlAction.add(pnlAccepted);
-		GridBagLayout gbl_pnlAccepted = new GridBagLayout();
-		gbl_pnlAccepted.columnWidths = new int[] { 265, 0 };
-		gbl_pnlAccepted.rowHeights = new int[] { 37, 37, 37, 37, 37, 37, 0 };
-		gbl_pnlAccepted.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
-		gbl_pnlAccepted.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0 };
-		pnlAccepted.setLayout(gbl_pnlAccepted);
+		
+		JPanel pnlAcceptedName = new JPanel();
+		pnlAcceptedName.setBackground(new Color(255, 255, 255, 0));
+		pnlAcceptedName.setBounds(15, 373, 265, 74);
+		pnlAction.add(pnlAcceptedName);
+		GridBagLayout gbl_pnlAcceptedName = new GridBagLayout();
+		gbl_pnlAcceptedName.columnWidths = new int[] { 265, 0 };
+		gbl_pnlAcceptedName.rowHeights = new int[] { 37, 37 };
+		gbl_pnlAcceptedName.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
+		gbl_pnlAcceptedName.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
+		pnlAcceptedName.setLayout(gbl_pnlAcceptedName);
 
 		JLabel lblAccepted = new JLabel("Приел");
 		lblAccepted.setFont(new Font("Century Gothic", Font.BOLD, 16));
@@ -321,93 +324,37 @@ public class ActionPanel extends JPanel {
 		gbc_lblAccepted.insets = new Insets(0, 0, 5, 0);
 		gbc_lblAccepted.gridx = 0;
 		gbc_lblAccepted.gridy = 0;
-		pnlAccepted.add(lblAccepted, gbc_lblAccepted);
+		pnlAcceptedName.add(lblAccepted, gbc_lblAccepted);
 
 		txtAccepted = new JTextField();
 		txtAccepted.setForeground(Base.TEXT_FIELD_COLOR);
-		txtAccepted.setFont(new Font("Century Gothic", Font.BOLD, 16));
+		txtAccepted.setFont(Base.DEFAULT_FONT);
 		txtAccepted.setColumns(10);
 		GridBagConstraints gbc_txtAccepted = new GridBagConstraints();
 		gbc_txtAccepted.fill = GridBagConstraints.BOTH;
 		gbc_txtAccepted.gridx = 0;
 		gbc_txtAccepted.gridy = 1;
-		pnlAccepted.add(txtAccepted, gbc_txtAccepted);
+		pnlAcceptedName.add(txtAccepted, gbc_txtAccepted);
+		
+		JPanel pnlActionDowntime = new JPanel();
+		pnlActionDowntime.setBackground(new Color(255, 255, 255, 0));
+		pnlActionDowntime.setBounds(15, 457, 265, 74);
+		pnlAction.add(pnlActionDowntime);
+		GridBagLayout gbl_pnlActionDowntime = new GridBagLayout();
+		gbl_pnlActionDowntime.columnWidths = new int[] { 265, 0 };
+		gbl_pnlActionDowntime.rowHeights = new int[] { 37, 37 };
+		gbl_pnlActionDowntime.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
+		gbl_pnlActionDowntime.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
+		pnlActionDowntime.setLayout(gbl_pnlActionDowntime);
 
-		JPanel pnlAcceptedDate = new JPanel();
-		pnlAcceptedDate.setBackground(new Color(255, 255, 255, 0));
-		GridBagConstraints gbc_pnlAcceptedDate = new GridBagConstraints();
-		gbc_pnlAcceptedDate.insets = new Insets(10, 0, 5, 0);
-		gbc_pnlAcceptedDate.fill = GridBagConstraints.BOTH;
-		gbc_pnlAcceptedDate.gridx = 0;
-		gbc_pnlAcceptedDate.gridy = 3;
-		pnlAccepted.add(pnlAcceptedDate, gbc_pnlAcceptedDate);
-		GridBagLayout gbl_pnlAcceptedDate = new GridBagLayout();
-		gbl_pnlAcceptedDate.columnWidths = new int[] { 50, 200, 0 };
-		gbl_pnlAcceptedDate.rowHeights = new int[] { 37, 0 };
-		gbl_pnlAcceptedDate.columnWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
-		gbl_pnlAcceptedDate.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
-		pnlAcceptedDate.setLayout(gbl_pnlAcceptedDate);
-
-		JLabel lblAcceptedDate = new JLabel("Дата");
-		lblAcceptedDate.setFont(new Font("Century Gothic", Font.BOLD, 16));
-		GridBagConstraints gbc_lblAcceptedDate = new GridBagConstraints();
-		gbc_lblAcceptedDate.anchor = GridBagConstraints.EAST;
-		gbc_lblAcceptedDate.insets = new Insets(0, 0, 0, 5);
-		gbc_lblAcceptedDate.gridx = 0;
-		gbc_lblAcceptedDate.gridy = 0;
-		pnlAcceptedDate.add(lblAcceptedDate, gbc_lblAcceptedDate);
-
-		DatePickerSettings datePickerAcceptedDateSettings = new DatePickerSettings(Base.LOCALE);
-		datePickerAcceptedDateSettings.setColor(DateArea.DatePickerTextValidDate, Base.TEXT_FIELD_COLOR);
-		datePickerAcceptedDateSettings.setFontValidDate(Base.RADIO_BUTTON_FONT);
-		datePickerAcceptedDateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
-		datePickerAcceptedDate = new DatePicker(datePickerAcceptedDateSettings);
-		datePickerAcceptedDate.setDateToToday();
-		GridBagConstraints gbc_datePickerAcceptedDate = new GridBagConstraints();
-		gbc_datePickerAcceptedDate.fill = GridBagConstraints.BOTH;
-		gbc_datePickerAcceptedDate.gridx = 1;
-		gbc_datePickerAcceptedDate.gridy = 0;
-		pnlAcceptedDate.add(datePickerAcceptedDate, gbc_datePickerAcceptedDate);
-
-		JPanel pnlAcceptedTime = new JPanel();
-		pnlAcceptedTime.setBackground(new Color(255, 255, 255, 0));
-		GridBagConstraints gbc_pnlAcceptedTime = new GridBagConstraints();
-		gbc_pnlAcceptedTime.insets = new Insets(0, 0, 5, 0);
-		gbc_pnlAcceptedTime.fill = GridBagConstraints.BOTH;
-		gbc_pnlAcceptedTime.gridx = 0;
-		gbc_pnlAcceptedTime.gridy = 4;
-		pnlAccepted.add(pnlAcceptedTime, gbc_pnlAcceptedTime);
-		GridBagLayout gbl_pnlAcceptedTime = new GridBagLayout();
-		gbl_pnlAcceptedTime.columnWidths = new int[] { 50, 200, 0 };
-		gbl_pnlAcceptedTime.rowHeights = new int[] { 37, 0 };
-		gbl_pnlAcceptedTime.columnWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
-		gbl_pnlAcceptedTime.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
-		pnlAcceptedTime.setLayout(gbl_pnlAcceptedTime);
-
-		JLabel lblAcceptedTime = new JLabel("Час");
-		lblAcceptedTime.setFont(new Font("Century Gothic", Font.BOLD, 16));
-		GridBagConstraints gbc_lblAcceptedTime = new GridBagConstraints();
-		gbc_lblAcceptedTime.anchor = GridBagConstraints.EAST;
-		gbc_lblAcceptedTime.insets = new Insets(0, 0, 0, 5);
-		gbc_lblAcceptedTime.gridx = 0;
-		gbc_lblAcceptedTime.gridy = 0;
-		pnlAcceptedTime.add(lblAcceptedTime, gbc_lblAcceptedTime);
-
-		timePickerAcceptedTime = new TimePicker(timeSettings);
-		GridBagConstraints gbc_timePickerAcceptedTime = new GridBagConstraints();
-		gbc_timePickerAcceptedTime.fill = GridBagConstraints.BOTH;
-		gbc_timePickerAcceptedTime.gridx = 1;
-		gbc_timePickerAcceptedTime.gridy = 0;
-		pnlAcceptedTime.add(timePickerAcceptedTime, gbc_timePickerAcceptedTime);
-
-		JLabel lblActionDowntime = new JLabel("Непродуктивно време");
+		JLabel lblActionDowntime = new JLabel("Престой (мин)");
 		lblActionDowntime.setFont(Base.DEFAULT_FONT);
 		GridBagConstraints gbc_lblActionDowntime = new GridBagConstraints();
 		gbc_lblActionDowntime.anchor = GridBagConstraints.WEST;
 		gbc_lblActionDowntime.insets = new Insets(0, 0, 5, 0);
 		gbc_lblActionDowntime.gridx = 0;
-		gbc_lblActionDowntime.gridy = 5;
-		pnlAccepted.add(lblActionDowntime, gbc_lblActionDowntime);
+		gbc_lblActionDowntime.gridy = 0;
+		pnlActionDowntime.add(lblActionDowntime, gbc_lblActionDowntime);
 
 		txtActionDowntime = new JTextField();
 		txtActionDowntime.setFont(Base.DEFAULT_FONT);
@@ -415,13 +362,13 @@ public class ActionPanel extends JPanel {
 		GridBagConstraints gbc_txtActionDowntime = new GridBagConstraints();
 		gbc_txtActionDowntime.fill = GridBagConstraints.BOTH;
 		gbc_txtActionDowntime.gridx = 0;
-		gbc_txtActionDowntime.gridy = 6;
-		pnlAccepted.add(txtActionDowntime, gbc_txtActionDowntime);
+		gbc_txtActionDowntime.gridy = 1;
+		pnlActionDowntime.add(txtActionDowntime, gbc_txtActionDowntime);
 		txtActionDowntime.setColumns(10);
 
 		JPanel pnlApproved = new JPanel();
 		pnlApproved.setBackground(new Color(255, 255, 255, 0));
-		pnlApproved.setBounds(15, 491, 265, 74);
+		pnlApproved.setBounds(15, 541, 265, 74);
 		pnlAction.add(pnlApproved);
 		GridBagLayout gbl_pnlApproved = new GridBagLayout();
 		gbl_pnlApproved.columnWidths = new int[] { 265, 0 };
@@ -451,7 +398,7 @@ public class ActionPanel extends JPanel {
 
 		JPanel pnlActionAuthor = new JPanel();
 		pnlActionAuthor.setBackground(new Color(255, 255, 255, 0));
-		pnlActionAuthor.setBounds(290, 491, 265, 74);
+		pnlActionAuthor.setBounds(290, 541, 265, 74);
 		pnlAction.add(pnlActionAuthor);
 		GridBagLayout gbl_pnlActionAuthor = new GridBagLayout();
 		gbl_pnlActionAuthor.columnWidths = new int[] { 265, 0 };
@@ -478,7 +425,90 @@ public class ActionPanel extends JPanel {
 		gbc_txtActionAuthor.gridx = 0;
 		gbc_txtActionAuthor.gridy = 1;
 		pnlActionAuthor.add(txtActionAuthor, gbc_txtActionAuthor);
-		cboStartDate.setDateToToday();
+		
+		JPanel pnlAcceptedTime = new JPanel();
+		pnlAcceptedTime.setBackground(new Color(255, 255, 255, 0));
+		pnlAcceptedTime.setBounds(290, 373, 265, 79);
+		pnlAction.add(pnlAcceptedTime);
+		GridBagLayout gbl_pnlAcceptedTime = new GridBagLayout();
+		gbl_pnlAcceptedTime.columnWidths = new int[]{265, 0};
+		gbl_pnlAcceptedTime.rowHeights = new int[]{37, 37, 0};
+		gbl_pnlAcceptedTime.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+		gbl_pnlAcceptedTime.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		pnlAcceptedTime.setLayout(gbl_pnlAcceptedTime);
+		
+		JPanel pnlDateAccepted = new JPanel();
+		pnlDateAccepted.setBackground(new Color(255, 255, 255, 0));
+		GridBagConstraints gbc_pnlDateAccepted = new GridBagConstraints();
+		gbc_pnlDateAccepted.fill = GridBagConstraints.BOTH;
+		gbc_pnlDateAccepted.insets = new Insets(0, 0, 5, 0);
+		gbc_pnlDateAccepted.gridx = 0;
+		gbc_pnlDateAccepted.gridy = 0;
+		pnlAcceptedTime.add(pnlDateAccepted, gbc_pnlDateAccepted);
+		GridBagLayout gbl_pnlDateAccepted = new GridBagLayout();
+		gbl_pnlDateAccepted.columnWidths = new int[]{50, 200, 0};
+		gbl_pnlDateAccepted.rowHeights = new int[]{37, 0};
+		gbl_pnlDateAccepted.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		gbl_pnlDateAccepted.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		pnlDateAccepted.setLayout(gbl_pnlDateAccepted);
+		
+		JLabel lblDateAccepted = new JLabel("Дата");
+		lblDateAccepted.setFont(new Font("Century Gothic", Font.BOLD, 16));
+		GridBagConstraints gbc_lblDateAccepted = new GridBagConstraints();
+		gbc_lblDateAccepted.anchor = GridBagConstraints.EAST;
+		gbc_lblDateAccepted.insets = new Insets(0, 0, 0, 5);
+		gbc_lblDateAccepted.gridx = 0;
+		gbc_lblDateAccepted.gridy = 0;
+		pnlDateAccepted.add(lblDateAccepted, gbc_lblDateAccepted);
+		
+		DatePickerSettings dateSettingsAcceptedDate = new DatePickerSettings(Base.LOCALE);
+		dateSettingsAcceptedDate.setFirstDayOfWeek(DayOfWeek.MONDAY);
+		dateSettingsAcceptedDate.setColor(DateArea.DatePickerTextValidDate, Base.TEXT_FIELD_COLOR);
+		dateSettingsAcceptedDate.setFontValidDate(Base.RADIO_BUTTON_FONT);
+		TimePickerSettings timeSettingsAcceptedTime = new TimePickerSettings(Base.LOCALE);
+		timeSettingsAcceptedTime.setColor(TimeArea.TimePickerTextValidTime, Color.blue);
+		timeSettingsAcceptedTime.initialTime = LocalTime.now();
+		timeSettingsAcceptedTime.setDisplaySpinnerButtons(true);
+		
+		datePickerAcceptedDate = new DatePicker(dateSettingsAcceptedDate);
+		GridBagConstraints gbc_datePicker = new GridBagConstraints();
+		gbc_datePicker.fill = GridBagConstraints.BOTH;
+		gbc_datePicker.gridx = 1;
+		gbc_datePicker.gridy = 0;
+		pnlDateAccepted.add(datePickerAcceptedDate, gbc_datePicker);
+		
+		JPanel pnlTimeAccepted = new JPanel();
+		pnlTimeAccepted.setBackground(new Color(255, 255, 255, 0));
+		GridBagConstraints gbc_pnlTimeAccepted = new GridBagConstraints();
+		gbc_pnlTimeAccepted.fill = GridBagConstraints.BOTH;
+		gbc_pnlTimeAccepted.gridx = 0;
+		gbc_pnlTimeAccepted.gridy = 1;
+		pnlAcceptedTime.add(pnlTimeAccepted, gbc_pnlTimeAccepted);
+		GridBagLayout gbl_pnlTimeAccepted = new GridBagLayout();
+		gbl_pnlTimeAccepted.columnWidths = new int[]{50, 200, 0};
+		gbl_pnlTimeAccepted.rowHeights = new int[]{37, 0};
+		gbl_pnlTimeAccepted.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		gbl_pnlTimeAccepted.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		pnlTimeAccepted.setLayout(gbl_pnlTimeAccepted);
+		
+		JLabel lblTimeAccepted = new JLabel("Час");
+		lblTimeAccepted.setFont(new Font("Century Gothic", Font.BOLD, 16));
+		GridBagConstraints gbc_lblTimeAccepted = new GridBagConstraints();
+		gbc_lblTimeAccepted.anchor = GridBagConstraints.EAST;
+		gbc_lblTimeAccepted.insets = new Insets(0, 0, 0, 5);
+		gbc_lblTimeAccepted.gridx = 0;
+		gbc_lblTimeAccepted.gridy = 0;
+		pnlTimeAccepted.add(lblTimeAccepted, gbc_lblTimeAccepted);
+		
+		timePickerAcceptedTime = new TimePicker(timeSettingsAcceptedTime);
+		GridBagConstraints gbc_timePicker = new GridBagConstraints();
+		gbc_timePicker.fill = GridBagConstraints.BOTH;
+		gbc_timePicker.gridx = 1;
+		gbc_timePicker.gridy = 0;
+		pnlTimeAccepted.add(timePickerAcceptedTime, gbc_timePicker);
+		
+		
+		endTimeSettings.setDisplaySpinnerButtons(true);
 
 	}
 

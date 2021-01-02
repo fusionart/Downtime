@@ -142,6 +142,8 @@ public class ÌaintenanceView extends JFrame {
 			};
 		};
 		tbl.setBounds(121, 261, 903, 265);
+		tbl.setFont(Base.DEFAULT_FONT);
+		tbl.setRowHeight(26);
 		scrollPane.setViewportView(tbl);
 		tbl.setModel(defaultTableModel);
 		tbl.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -203,9 +205,9 @@ public class ÌaintenanceView extends JFrame {
 		defaultTableModel.setRowCount(0);
 
 		// sort downtimeDb by key
-		Map<Integer, DowntimeModel> treeMap = new TreeMap<>(Base.downtimeDb);
+		//Map<Integer, DowntimeModel> treeMap = new TreeMap<>(Base.downtimeDb);
 
-		for (Integer key : treeMap.keySet()) {
+		for (Integer key : Base.downtimeDb.keySet()) {
 			// Check if downtime has action
 			if (!Base.actionDb.containsKey(key)) {
 				DowntimeModel dtm = BaseMethods.LoadDowntimeModel(Integer.toString(key));

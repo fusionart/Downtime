@@ -216,6 +216,9 @@ public class DowntimeView {
 		pnlDowntime.add(pnlTime);
 		TimePickerSettings timeSettings = new TimePickerSettings(Base.LOCALE);
 		timeSettings.setColor(TimeArea.TimePickerTextValidTime, Base.TEXT_FIELD_COLOR);
+		//timeSettings.setDisplayToggleTimeMenuButton(false);
+        timeSettings.setDisplaySpinnerButtons(true);
+        timeSettings.use24HourClockFormat();
 		// timeSettings.fontValidTime(Base.DEFAULT_FONT);
 		// timeSettings.initialTime = LocalTime.now();
 		GridBagLayout gbl_pnlTime = new GridBagLayout();

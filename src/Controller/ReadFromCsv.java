@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import Model.ActionModel;
@@ -15,12 +16,12 @@ import Model.DowntimeModel;
 
 public class ReadFromCsv {
 
-	public static HashMap<Integer, DowntimeModel> ReadDowntimeDb(String path) throws IOException {
+	public static LinkedHashMap<Integer, DowntimeModel> ReadDowntimeDb(String path) throws IOException {
 
 		BufferedReader csvReader = null;
 		String row;
 
-		HashMap<Integer, DowntimeModel> downtimeData = new HashMap<Integer, DowntimeModel>();
+		LinkedHashMap<Integer, DowntimeModel> downtimeData = new LinkedHashMap<Integer, DowntimeModel>();
 
 		try {
 			csvReader = new BufferedReader(new FileReader(path));

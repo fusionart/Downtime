@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.prefs.Preferences;
@@ -22,7 +23,7 @@ public class Base {
 	private final static String MAIN_PATH = "C:\\Downtime\\sys\\settings.ini";
 
 	// database
-	public static HashMap<Integer, DowntimeModel> downtimeDb;
+	public static LinkedHashMap<Integer, DowntimeModel> downtimeDb;
 	public static HashMap<Integer, ActionModel> actionDb;
 	
 	//combobox
@@ -31,9 +32,9 @@ public class Base {
 
 	// Labels
 	public final static String FRAME_CAPTION = "MONBAT";
-	public final static String CREATE_DOWNTIME_LABEL = "Ново непродуктивно време";
-	public final static String ACTION_LABEL = "Действие към\nнепродуктивно време";
-	public final static String MAINTENANCE_LABEL = "Поддръжка: активни";
+	public final static String CREATE_DOWNTIME_LABEL = "Въвеждане на формуляр";
+	public final static String ACTION_LABEL = "Въвеждане действие \nкъм формуляр";
+	public final static String MAINTENANCE_LABEL = "Поддръжка: статистика";
 	
 	//buttons
 	public final static String MAINTENANCE = "maintenance";

@@ -310,7 +310,6 @@ public class AllDowntimeView extends JFrame {
 		tbl.setModel(defaultTableModel);
 		tbl.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		MaintenanceColorRenderer colorRenderer = new MaintenanceColorRenderer();
-		tbl.setDefaultRenderer(Object.class, colorRenderer);
 
 		JButton btnRefresh = new JButton("Презареди");
 		btnRefresh.addMouseListener(new MouseAdapter() {
@@ -441,9 +440,9 @@ public class AllDowntimeView extends JFrame {
 		defaultTableModel.setRowCount(0);
 
 		// sort downtimeDb by key
-		Map<Integer, DowntimeModel> treeMap = new TreeMap<>(Base.downtimeDb);
+		//Map<Integer, DowntimeModel> treeMap = new TreeMap<>(Base.downtimeDb);
 
-		for (Integer key : treeMap.keySet()) {
+		for (Integer key : Base.downtimeDb.keySet()) {
 
 			dtm = BaseMethods.LoadDowntimeModel(Integer.toString(key));
 

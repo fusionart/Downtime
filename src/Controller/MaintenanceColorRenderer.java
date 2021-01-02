@@ -20,7 +20,7 @@ public class MaintenanceColorRenderer implements TableCellRenderer {
         String dtName = dtType.toString();
         
         if (dtName.equals("Авария")) {
-            c.setBackground(new Color(255, 100, 100, 150));
+            c.setBackground(new Color(255, 0, 0, 150));
         } else {
             c.setBackground(Color.white);
         }

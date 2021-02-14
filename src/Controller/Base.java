@@ -3,13 +3,19 @@ package Controller;
 import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
+import org.ini4j.Ini;
+import org.ini4j.Profile.Section;
 
 import Model.ActionModel;
 import Model.DowntimeModel;
@@ -21,12 +27,13 @@ public class Base {
 
 	// Paths
 	private final static String MAIN_PATH = "C:\\Downtime\\sys\\settings.ini";
+	private final static String EMAIL_PATH = "C:\\Downtime\\sys\\emailsettings.ini";
 
 	// database
 	public static LinkedHashMap<Integer, DowntimeModel> downtimeDb;
 	public static HashMap<Integer, ActionModel> actionDb;
-	
-	//combobox
+
+	// combobox
 	public static String workshopFile;
 	public static List<String> workshopData;
 
@@ -35,8 +42,8 @@ public class Base {
 	public final static String CREATE_DOWNTIME_LABEL = "Въвеждане на формуляр";
 	public final static String ACTION_LABEL = "Въвеждане действие \nкъм формуляр";
 	public final static String MAINTENANCE_LABEL = "Поддръжка: статистика";
-	
-	//buttons
+
+	// buttons
 	public final static String MAINTENANCE = "maintenance";
 	public final static String STATISTICS = "statistics";
 
@@ -49,15 +56,18 @@ public class Base {
 	public final static int PANEL_WIDTH = 250;
 
 	public final static Locale LOCALE = new Locale("bg");
+	
+	public final static DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 	// default fonts
 	public final static Font DEFAULT_FONT = new Font("Century Gothic", Font.BOLD, 16);
 	public final static Font RADIO_BUTTON_FONT = new Font("Century Gothic", Font.BOLD, 14);
-	
-	//default colors
+
+	// default colors
 	public final static Color TEXT_FIELD_COLOR = new Color(51, 51, 204);
 
 	public static Preferences settings;
+	public static Ini emailsettings;
 	public static String backgroundPic;
 	public static String logoWhite;
 	public static String icon;
@@ -72,16 +82,42 @@ public class Base {
 	public static String maintenancePassword;
 	public static String adminPassword;
 	public static String statisticsPassword;
-	
+
+	// email settings
+	public static String smtpuser;
+	public static String smtppassword;
+	public static String smtphostname;
+	public static String smtpport;
+	public static String smtpusetls;
+	public static List<String> recipientsList = new ArrayList<String>();
+
 	public static Integer refreshTime;
 
-	public static void LoadBasics() {
+	public static void LoadBasics() throws BackingStoreException {
 		LoadPaths();
 		AssignVariables();
 		LoadDowntimeDb();
 		LoadActionDb();
 		AssignPasswords();
+		AssignEmailSettings();
+		AssignEmailRecipients();
 		LoadComboboxData();
+	}
+
+	private static void AssignEmailSettings() {
+		smtpuser = emailsettings.get("sender", "smtpuser");
+		smtppassword = emailsettings.get("sender", "smtppassword");
+		smtphostname = emailsettings.get("sender", "smtphostname");
+		smtpport = emailsettings.get("sender", "smtpport");
+		smtpusetls = emailsettings.get("sender", "smtpusetls");
+	}
+
+	private static void AssignEmailRecipients() throws BackingStoreException {
+		Section section = emailsettings.get("recipient");
+		for (String item : section.keySet()) {
+			//System.out.println("\t"+item+"="+section.get(item));
+			recipientsList.add(section.get(item));
+		}
 	}
 
 	private static void LoadComboboxData() {
@@ -96,6 +132,7 @@ public class Base {
 	private static void LoadPaths() {
 		try {
 			settings = ReadIni.ParseIni(MAIN_PATH);
+			emailsettings = new Ini(new FileReader(EMAIL_PATH));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -187,16 +224,16 @@ public class Base {
 		sb.append(settings.node("actiondbfile").get("extension", null));
 
 		actionDbFile = sb.toString();
-		
+
 		refreshTime = Integer.parseInt(settings.node("refreshtime").get("time", null));
-		
+
 		sb = new StringBuilder();
 		sb.append(settings.node("combobox").get("address", null));
 		sb.append(BACKSLASH);
 		sb.append(settings.node("combobox").get("workshop", null));
 		sb.append(DOT);
 		sb.append(settings.node("combobox").get("extension", null));
-		
+
 		workshopFile = sb.toString();
 	}
 }

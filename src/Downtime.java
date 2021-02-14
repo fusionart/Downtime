@@ -1,5 +1,6 @@
 
 import java.io.IOException;
+import java.util.prefs.BackingStoreException;
 
 import javax.swing.JOptionPane;
 
@@ -8,7 +9,7 @@ import View.MainView;
 
 public class Downtime {
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, BackingStoreException {
 		// TODO Auto-generated method stub
 		Base.LoadBasics();
 		

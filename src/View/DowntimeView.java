@@ -5,6 +5,8 @@ import java.awt.GridBagConstraints;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListCellRenderer;
@@ -21,6 +23,7 @@ import com.github.lgooddatepicker.components.TimePickerSettings.TimeArea;
 import Controller.Base;
 import Controller.BaseMethods;
 import Controller.SaveToCsv;
+import Controller.SendMail;
 import Model.ActionModel;
 import Model.DowntimeModel;
 
@@ -36,6 +39,7 @@ import java.awt.Image;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 
 import javax.swing.border.TitledBorder;
 import javax.swing.border.EtchedBorder;
@@ -216,9 +220,9 @@ public class DowntimeView {
 		pnlDowntime.add(pnlTime);
 		TimePickerSettings timeSettings = new TimePickerSettings(Base.LOCALE);
 		timeSettings.setColor(TimeArea.TimePickerTextValidTime, Base.TEXT_FIELD_COLOR);
-		//timeSettings.setDisplayToggleTimeMenuButton(false);
-        timeSettings.setDisplaySpinnerButtons(true);
-        timeSettings.use24HourClockFormat();
+		// timeSettings.setDisplayToggleTimeMenuButton(false);
+		timeSettings.setDisplaySpinnerButtons(true);
+		timeSettings.use24HourClockFormat();
 		// timeSettings.fontValidTime(Base.DEFAULT_FONT);
 		// timeSettings.initialTime = LocalTime.now();
 		GridBagLayout gbl_pnlTime = new GridBagLayout();
@@ -553,8 +557,10 @@ public class DowntimeView {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				Base.LoadDowntimeDb();
+				Boolean isValidDowntime = null;
 				if (!isDowntimeLoaded) {
-					if (ValidateDowntime()) {
+					isValidDowntime = ValidateDowntime();
+					if (isValidDowntime) {
 						DowntimeModel downtime = SaveDowntime();
 						SaveToCsv.SaveDowntime(downtime);
 
@@ -563,6 +569,18 @@ public class DowntimeView {
 						if (!chckbxEnterAction.isSelected()) {
 							frmMain.dispose();
 							new MainView();
+
+							if (Base.recipientsList.size() > 0) {
+								//create background thread for sending email
+								ExecutorService emailExecutor = Executors.newSingleThreadExecutor();
+								emailExecutor.execute(new Runnable() {
+									@Override
+									public void run() {
+										SendMail.SendEmail(downtime);
+									}
+								});
+								emailExecutor.shutdown();
+							}
 						}
 					}
 				}
@@ -578,7 +596,7 @@ public class DowntimeView {
 							frmMain.dispose();
 							new MainView();
 						} else {
-							if (ValidateDowntime()) {
+							if (isValidDowntime) {
 								frmMain.dispose();
 								new MainView();
 							}
@@ -608,77 +626,90 @@ public class DowntimeView {
 
 	protected boolean ValidateAction() {
 		if (actionPanel.getCboStartDate() == null) {
-			JOptionPane.showMessageDialog(null, "Въведете начална Дата към действието", "Грешка", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Въведете начална Дата към действието", "Грешка",
+					JOptionPane.INFORMATION_MESSAGE);
 			return false;
 		}
 
 		if (actionPanel.getCboStartTime() == null) {
-			JOptionPane.showMessageDialog(null, "Въведете начален Час към действието", "Грешка", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Въведете начален Час към действието", "Грешка",
+					JOptionPane.INFORMATION_MESSAGE);
 			return false;
 		}
-		
+
 		if (actionPanel.getCboEndDate() == null) {
-			JOptionPane.showMessageDialog(null, "Въведете крайна Дата към действието", "Грешка", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Въведете крайна Дата към действието", "Грешка",
+					JOptionPane.INFORMATION_MESSAGE);
 			return false;
 		}
 
 		if (actionPanel.getCboEndTime() == null) {
-			JOptionPane.showMessageDialog(null, "Въведете краен Час към действието", "Грешка", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Въведете краен Час към действието", "Грешка",
+					JOptionPane.INFORMATION_MESSAGE);
 			return false;
 		}
-		
+
 		if (actionPanel.getDatePickerAcceptedDate() == null) {
-			JOptionPane.showMessageDialog(null, "Въведете Дата на приемане към действието", "Грешка", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Въведете Дата на приемане към действието", "Грешка",
+					JOptionPane.INFORMATION_MESSAGE);
 			return false;
 		}
 
 		if (actionPanel.getTimePickerAcceptedTime() == null) {
-			JOptionPane.showMessageDialog(null, "Въведете Час на приемане към действието", "Грешка", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Въведете Час на приемане към действието", "Грешка",
+					JOptionPane.INFORMATION_MESSAGE);
 			return false;
 		}
-		
+
 		if (actionPanel.getTxtPerformer().equals("")) {
-			JOptionPane.showMessageDialog(null, "Въведете Извършил към действието", "Грешка", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Въведете Извършил към действието", "Грешка",
+					JOptionPane.INFORMATION_MESSAGE);
 			actionPanel.requestFocusTxtPerformer();
 			return false;
 		}
-		
+
 		if (actionPanel.getTxtAccepted().equals("")) {
-			JOptionPane.showMessageDialog(null, "Въведете Приел към действието", "Грешка", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Въведете Приел към действието", "Грешка",
+					JOptionPane.INFORMATION_MESSAGE);
 			actionPanel.requestFocusTxtAccepted();
 			return false;
 		}
-		
+
 		if (actionPanel.getTxtActionDescription().equals("")) {
-			JOptionPane.showMessageDialog(null, "Въведете Описание към действието", "Грешка", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Въведете Описание към действието", "Грешка",
+					JOptionPane.INFORMATION_MESSAGE);
 			actionPanel.requestFocusTxtActionDescription();
 			return false;
 		}
-		
+
 		if (actionPanel.getTxtActionRecommendation().equals("")) {
-			JOptionPane.showMessageDialog(null, "Въведете Препоръка към действието", "Грешка", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Въведете Препоръка към действието", "Грешка",
+					JOptionPane.INFORMATION_MESSAGE);
 			actionPanel.requestFocusTxtActionRecommendation();
 			return false;
 		}
-		
+
 		if (actionPanel.getTxtActionDowntime().equals("")) {
-			JOptionPane.showMessageDialog(null, "Въведете Непродуктивно време към действието", "Грешка", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Въведете Непродуктивно време към действието", "Грешка",
+					JOptionPane.INFORMATION_MESSAGE);
 			actionPanel.requestFocusTxtActionDowntime();
 			return false;
 		}
-		
+
 		if (actionPanel.getTxtApproved().equals("")) {
-			JOptionPane.showMessageDialog(null, "Въведете Утвърдил към действието", "Грешка", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Въведете Утвърдил към действието", "Грешка",
+					JOptionPane.INFORMATION_MESSAGE);
 			actionPanel.requestFocusTxtApproved();
 			return false;
 		}
-		
+
 		if (actionPanel.getTxtActionAuthor().equals("")) {
-			JOptionPane.showMessageDialog(null, "Въведете Въведено от към действието", "Грешка", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Въведете Въведено от към действието", "Грешка",
+					JOptionPane.INFORMATION_MESSAGE);
 			actionPanel.requestFocusTxtActionAuthor();
 			return false;
 		}
-		
+
 		return true;
 	}
 
@@ -709,19 +740,19 @@ public class DowntimeView {
 			JOptionPane.showMessageDialog(null, "Изберете Цех", "Грешка", JOptionPane.INFORMATION_MESSAGE);
 			return false;
 		}
-		
+
 		if (txtFieldMachine.getText().equals("")) {
 			JOptionPane.showMessageDialog(null, "Въведете Участък/Машина", "Грешка", JOptionPane.INFORMATION_MESSAGE);
 			txtFieldMachine.requestFocus();
 			return false;
 		}
-		
+
 		if (txtNotified.getText().equals("")) {
 			JOptionPane.showMessageDialog(null, "Въведете Уведомен", "Грешка", JOptionPane.INFORMATION_MESSAGE);
 			txtNotified.requestFocus();
 			return false;
 		}
-		
+
 		if (txtNotifier.getText().equals("")) {
 			JOptionPane.showMessageDialog(null, "Въведете Уведомил", "Грешка", JOptionPane.INFORMATION_MESSAGE);
 			txtNotifier.requestFocus();
@@ -733,13 +764,13 @@ public class DowntimeView {
 			txtConfirm.requestFocus();
 			return false;
 		}
-		
+
 		if (txtAuthor.getText().equals("")) {
 			JOptionPane.showMessageDialog(null, "Въведете Въведено от", "Грешка", JOptionPane.INFORMATION_MESSAGE);
 			txtAuthor.requestFocus();
 			return false;
 		}
-		
+
 		if (txtDescription.getText().equals("")) {
 			JOptionPane.showMessageDialog(null, "Въведете Описание", "Грешка", JOptionPane.INFORMATION_MESSAGE);
 			txtDescription.requestFocus();
@@ -751,7 +782,7 @@ public class DowntimeView {
 					JOptionPane.INFORMATION_MESSAGE);
 			return false;
 		}
-		
+
 		if (radioButtonGroup.getSelection().getActionCommand() == "Other") {
 			if (txtOther.getText().equals("")) {
 				JOptionPane.showMessageDialog(null, "Въведете Друго", "Грешка", JOptionPane.INFORMATION_MESSAGE);

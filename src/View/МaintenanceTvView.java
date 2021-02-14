@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,6 +22,7 @@ import java.util.Map;
 
 import java.util.TreeMap;
 
+import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -30,11 +32,13 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import Controller.Base;
 import Controller.BaseMethods;
 import Controller.MaintenanceColorRenderer;
+import Controller.WordWrapCellRenderer;
 import Model.DowntimeModel;
 
 import javax.swing.JRadioButton;
@@ -45,8 +49,9 @@ import javax.swing.border.TitledBorder;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 
-public class МaintenanceView extends JFrame {
+public class МaintenanceTvView extends JFrame {
 
 	/**
 	 * 
@@ -58,18 +63,21 @@ public class МaintenanceView extends JFrame {
 	private JRadioButton rdbtnAll;
 	private static DefaultTableModel defaultTableModel;
 	private String header[] = new String[] { "Авария/Сигнал", "Номер", "Дата", "Час на оповестяване", "Описание", "Цех",
-			"Участък/Машина", "Уведомен", "Уведомил"};
+			"Участък/Машина", "Уведомен", "Уведомил" };
 
 	private static FileTime initialTime;
 	private static FileTime lastModifiedTime;
 
-	public МaintenanceView() {
+	private static int hdHeight = 1080;
+	private static int hdWidth = 1920;
+
+	public МaintenanceTvView() {
 		Image frameIcon = Toolkit.getDefaultToolkit().getImage(Base.icon);
 		setIconImage(frameIcon);
 		setTitle(Base.FRAME_CAPTION);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, Base.WIDTH, Base.HEIGHT);
-		setResizable(false);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, hdWidth, hdHeight);
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
 
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -80,8 +88,7 @@ public class МaintenanceView extends JFrame {
 				new EtchedBorder(EtchedBorder.LOWERED, new Color(100, 149, 237), new Color(160, 160, 160)),
 				"Аварии и сигнали", TitledBorder.LEADING, TitledBorder.TOP, Base.DEFAULT_FONT, null));
 		pnlMain.setBounds(Base.ELEMENT_OFFSET, Base.ELEMENT_OFFSET,
-				(Base.WIDTH - Base.ELEMENT_OFFSET * 3 + Base.ELEMENT_OFFSET / 2),
-				(Base.HEIGHT - Base.ELEMENT_OFFSET * 3));
+				(hdWidth - Base.ELEMENT_OFFSET * 3 + Base.ELEMENT_OFFSET / 2), (hdHeight - Base.ELEMENT_OFFSET * 3));
 		pnlMain.setBackground(new Color(255, 255, 255, 150));
 		contentPane.add(pnlMain);
 		pnlMain.setLayout(null);
@@ -140,19 +147,6 @@ public class МaintenanceView extends JFrame {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(25, 100, pnlMain.getWidth() - 50, pnlMain.getHeight() - 150);
 		pnlMain.add(scrollPane);
-		tbl = new JTable() {
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			};
-		};
-		tbl.setBounds(121, 261, 903, 265);
-		tbl.setFont(Base.DEFAULT_FONT);
-		tbl.setRowHeight(26);
-		tbl.getTableHeader().setFont(Base.DEFAULT_FONT);
-		tbl.getTableHeader().setResizingAllowed(true);
-		scrollPane.setViewportView(tbl);
-		tbl.setModel(defaultTableModel);
-		tbl.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
 		JButton btnRefresh = new JButton("Презареди");
 		btnRefresh.addMouseListener(new MouseAdapter() {
@@ -163,38 +157,47 @@ public class МaintenanceView extends JFrame {
 				rdbtnAll.setSelected(true);
 			}
 		});
-		btnRefresh.setBounds(1132, 52, 150, 30);
+		btnRefresh.setBounds(1652, 52, 150, 30);
 		btnRefresh.setFont(Base.DEFAULT_FONT);
 		pnlMain.add(btnRefresh);
 
-		JButton btnBack = new JButton("Назад");
+		JButton btnBack = new JButton("Затвори");
+		btnBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		btnBack.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				dispose();
-				new MainView();
 			}
 		});
-		btnBack.setBounds(1132, 676, 150, 30);
+		btnBack.setBounds(1652, 928, 150, 30);
 		btnBack.setFont(Base.DEFAULT_FONT);
 		pnlMain.add(btnBack);
 		
-		JButton btnTvView = new JButton("ТВ Изглед");
-		btnTvView.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				new МaintenanceTvView();
-			}
-		});
-		btnTvView.setBounds(967, 52, 150, 30);
-		btnTvView.setFont(Base.DEFAULT_FONT);
-		pnlMain.add(btnTvView);
+		tbl = new JTable() {
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			};
+		};
+		tbl.setBounds(121, 261, 903, 265);
+		tbl.setFont(Base.DEFAULT_FONT);
+		tbl.getTableHeader().setFont(Base.DEFAULT_FONT);
+		tbl.getTableHeader().setResizingAllowed(true);
+		tbl.setRowHeight(40);
+		scrollPane.setViewportView(tbl);
+		tbl.setModel(defaultTableModel);
+		tbl.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
 		FillTable(true, false, false);
+
+		// set coloring for the table
 		MaintenanceColorRenderer colorRenderer = new MaintenanceColorRenderer();
 		tbl.setDefaultRenderer(Object.class, colorRenderer);
 		BaseMethods.ResizeColumnWidth(tbl);
-		
+		// word wrap for Description column
+		tbl.getColumnModel().getColumn(4).setCellRenderer(new WordWrapCellRenderer());
 		ReloadTimer();
 
 		SetBackgroundPicture();
@@ -222,17 +225,17 @@ public class МaintenanceView extends JFrame {
 				if (dtm.isBreakdown() && (all || breakdown)) {
 					actionName = "Авария";
 
-					defaultTableModel.addRow(new Object[] { actionName, dtm.getNumber(), dtm.getEntryDate().format(Base.dateFormat),
-							dtm.getEntryTime(), dtm.getDescription(), dtm.getWorkshop(), dtm.getFieldMachine(), dtm.getNotified(),
-							dtm.getNotifier()});
+					defaultTableModel.addRow(new Object[] { actionName, dtm.getNumber(),
+							dtm.getEntryDate().format(Base.dateFormat), dtm.getEntryTime(), dtm.getDescription(),
+							dtm.getWorkshop(), dtm.getFieldMachine(), dtm.getNotified(), dtm.getNotifier() });
 				}
 
 				if (dtm.isSignal() && (all || signal)) {
 					actionName = "Сигнал";
 
-					defaultTableModel.addRow(new Object[] { actionName, dtm.getNumber(), dtm.getEntryDate().format(Base.dateFormat),
-							dtm.getEntryTime(), dtm.getDescription(), dtm.getWorkshop(), dtm.getFieldMachine(), dtm.getNotified(),
-							dtm.getNotifier() });
+					defaultTableModel.addRow(new Object[] { actionName, dtm.getNumber(),
+							dtm.getEntryDate().format(Base.dateFormat), dtm.getEntryTime(), dtm.getDescription(),
+							dtm.getWorkshop(), dtm.getFieldMachine(), dtm.getNotified(), dtm.getNotifier() });
 				}
 			}
 		}
@@ -280,10 +283,18 @@ public class МaintenanceView extends JFrame {
 	}
 
 	private void SetBackgroundPicture() {
-		ImageIcon imageIcon = new ImageIcon(Base.backgroundPic);
+		BufferedImage img = null;
+		try {
+			img = ImageIO.read(new File(Base.backgroundPic));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		Image dimg = img.getScaledInstance(hdWidth, hdHeight, Image.SCALE_SMOOTH);
+		ImageIcon imageIcon = new ImageIcon(dimg);
 		contentPane.setLayout(null);
 		lblBackground = new JLabel(imageIcon);
-		lblBackground.setBounds(5, 5, 1374, 777);
+		lblBackground.setBounds(5, 5, hdWidth, hdHeight);
 		getContentPane().add(lblBackground);
 	}
 }

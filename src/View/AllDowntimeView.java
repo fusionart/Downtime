@@ -24,6 +24,10 @@ import java.nio.file.Paths;
 import java.nio.file.attribute.FileTime;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -68,35 +72,19 @@ public class AllDowntimeView extends JFrame {
 	private ButtonGroup rdbtnSecondFilter;
 	private JRadioButton rdbtnAll;
 	private static DefaultTableModel defaultTableModel;
-	private String header[] = new String[] { "Вид", "Номер", "Дата", "Час на оповестяване", "Цех", "Участък/Машина",
-			"Уведомен", "Уведомил", "Описание", "Действие начало дата", "Действие начало час", "Действие край дата",
-			"Действие край час", "Извършил", "Описание", "Приел", "Приел дата", "Приел час", "Непродуктивно време",
-			"Утвърдил" };
+	private String header[] = new String[] { "Вид", "Номер", "Дата", "Час на оповестяване", "Описание", "Цех",
+			"Участък/Машина", "Уведомен", "Уведомил", "Действие начало дата", "Действие начало час",
+			"Действие край дата", "Действие край час", "Извършил", "Описание", "Приел", "Приел дата", "Приел час",
+			"Непродуктивно време", "Утвърдил" };
 
-	private String excelHeader[] = new String[] { "Вид", "Номер", "Дата", "Час на оповестяване", "Цех",
-			"Участък/Машина", "Уведомен", "Уведомил", "Описание", "Въведено от", "Въведено на", "Въведено в",
+	private String excelHeader[] = new String[] { "Вид", "Номер", "Дата", "Час на оповестяване", "Описание", "Цех",
+			"Участък/Машина", "Уведомен", "Уведомил", "Въведено от", "Въведено на", "Въведено в",
 			"Действие начало дата", "Действие начало час", "Действие край дата", "Действие край час", "Извършил",
 			"Описание", "Приел", "Приел дата", "Приел час", "Непродуктивно време", "Утвърдил", "Въведено от",
 			"Въведено на", "Въведено в" };
 
 	private static FileTime initialTime;
 	private static FileTime lastModifiedTime;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AllDowntimeView frame = new AllDowntimeView();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
@@ -309,6 +297,7 @@ public class AllDowntimeView extends JFrame {
 		scrollPane.setViewportView(tbl);
 		tbl.setModel(defaultTableModel);
 		tbl.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		tbl.getTableHeader().setResizingAllowed(true);
 		MaintenanceColorRenderer colorRenderer = new MaintenanceColorRenderer();
 
 		JButton btnRefresh = new JButton("Презареди");
@@ -317,7 +306,7 @@ public class AllDowntimeView extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				ReloadDbs();
 				FillTable();
-				ResizeColumnWidth(tbl);
+				BaseMethods.ResizeColumnWidth(tbl);
 			}
 		});
 		btnRefresh.setBounds(1132, 52, 150, 30);
@@ -347,27 +336,12 @@ public class AllDowntimeView extends JFrame {
 		pnlMain.add(btnBack);
 
 		FillTable();
-		ResizeColumnWidth(tbl);
+		BaseMethods.ResizeColumnWidth(tbl);
 
 		ReloadTimer();
 
 		SetBackgroundPicture();
 		setVisible(true);
-	}
-
-	private void ResizeColumnWidth(JTable table) {
-		final TableColumnModel columnModel = table.getColumnModel();
-		for (int column = 0; column < table.getColumnCount(); column++) {
-			int width = 15; // Min width
-			for (int row = 0; row < table.getRowCount(); row++) {
-				TableCellRenderer renderer = table.getCellRenderer(row, column);
-				Component comp = table.prepareRenderer(renderer, row, column);
-				width = Math.max(comp.getPreferredSize().width + 1, width);
-			}
-			if (width > 300)
-				width = 300;
-			columnModel.getColumn(column).setPreferredWidth(width);
-		}
 	}
 
 	private void FillTable() {
@@ -440,9 +414,13 @@ public class AllDowntimeView extends JFrame {
 		defaultTableModel.setRowCount(0);
 
 		// sort downtimeDb by key
-		//Map<Integer, DowntimeModel> treeMap = new TreeMap<>(Base.downtimeDb);
+		// Map<Integer, DowntimeModel> treeMap = new TreeMap<>(Base.downtimeDb);
+		
+		//reverse the order of the Base.downtimeDb
+		List<Integer> reverseOrderedKeys = new ArrayList<Integer>(Base.downtimeDb.keySet());
+		Collections.reverse(reverseOrderedKeys);
 
-		for (Integer key : Base.downtimeDb.keySet()) {
+		for (Integer key : reverseOrderedKeys) {
 
 			dtm = BaseMethods.LoadDowntimeModel(Integer.toString(key));
 
@@ -540,11 +518,22 @@ public class AllDowntimeView extends JFrame {
 	}
 
 	private void AddRowsToTable(String actionName, DowntimeModel dtm, ActionModel actm) {
-		defaultTableModel.addRow(new Object[] { actionName, dtm.getNumber(), dtm.getEntryDate(), dtm.getEntryTime(),
-				dtm.getWorkshop(), dtm.getFieldMachine(), dtm.getNotified(), dtm.getNotifier(), dtm.getDescription(),
-				actm.getStartDate(), actm.getStartTime(), actm.getEndDate(), actm.getEndTime(), actm.getPerformer(),
-				actm.getDescription(), actm.getAccepted(), actm.getDateOfAccept(), actm.getTimeOfAccept(),
+		defaultTableModel.addRow(new Object[] { actionName, dtm.getNumber(), FormatDate(dtm.getEntryDate()), dtm.getEntryTime(),
+				dtm.getDescription(), dtm.getWorkshop(), dtm.getFieldMachine(), dtm.getNotified(), dtm.getNotifier(),
+				FormatDate(actm.getStartDate()), actm.getStartTime(), FormatDate(actm.getEndDate()), actm.getEndTime(), actm.getPerformer(),
+				actm.getDescription(), actm.getAccepted(), FormatDate(actm.getDateOfAccept()), actm.getTimeOfAccept(),
 				actm.getDonwtime(), actm.getApproved() });
+	}
+	
+	private static String FormatDate(LocalDate date) {
+		
+		if (date != null) {
+			String formattedDate = date.format(Base.dateFormat);
+
+			return formattedDate;
+		} else {
+			return null;
+		}
 	}
 
 	private void ExportToExcel() {
@@ -565,7 +554,7 @@ public class AllDowntimeView extends JFrame {
 
 		CreationHelper createHelper = workbook.getCreationHelper();
 		CellStyle cellDateStyle = workbook.createCellStyle();
-		cellDateStyle.setDataFormat(createHelper.createDataFormat().getFormat("dd/mm/yyyy"));
+		cellDateStyle.setDataFormat(createHelper.createDataFormat().getFormat("dd/MM/yyyy"));
 
 		for (String field : excelHeader) {
 			Cell cell = row.createCell(columnCount++);
@@ -584,33 +573,7 @@ public class AllDowntimeView extends JFrame {
 				actm = BaseMethods.LoadActionModel(Integer.toString(key));
 			}
 
-			if (dtm.isBreakdown()) {
-				actionName = "Авария";
-			}
-
-			if (dtm.isSignal()) {
-				actionName = "Сигнал";
-			}
-
-			if (dtm.isMaterial()) {
-				actionName = "Материал";
-			}
-
-			if (dtm.isCleaning()) {
-				actionName = "Почистване";
-			}
-
-			if (dtm.isRepair()) {
-				actionName = "Поправка";
-			}
-
-			if (dtm.isNoElectricity()) {
-				actionName = "Липса на ток";
-			}
-
-			if (dtm.isOther()) {
-				actionName = dtm.getOtherText();
-			}
+			actionName = BaseMethods.ActionName(dtm);
 
 			row = sheet.createRow(++rowCount);
 
@@ -628,19 +591,19 @@ public class AllDowntimeView extends JFrame {
 			cell.setCellValue(dtm.getEntryTime().toString());
 
 			cell = row.createCell(4);
-			cell.setCellValue(dtm.getWorkshop());
+			cell.setCellValue(dtm.getDescription());
 
 			cell = row.createCell(5);
-			cell.setCellValue(dtm.getFieldMachine());
+			cell.setCellValue(dtm.getWorkshop());
 
 			cell = row.createCell(6);
-			cell.setCellValue(dtm.getNotified());
+			cell.setCellValue(dtm.getFieldMachine());
 
 			cell = row.createCell(7);
-			cell.setCellValue(dtm.getNotifier());
+			cell.setCellValue(dtm.getNotified());
 
 			cell = row.createCell(8);
-			cell.setCellValue(dtm.getDescription());
+			cell.setCellValue(dtm.getNotifier());
 
 			cell = row.createCell(9);
 			cell.setCellValue(dtm.getAuthor());
@@ -761,7 +724,7 @@ public class AllDowntimeView extends JFrame {
 
 					ReloadDbs();
 					FillTable();
-					ResizeColumnWidth(tbl);
+					BaseMethods.ResizeColumnWidth(tbl);
 				}
 			}
 		});

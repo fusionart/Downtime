@@ -194,17 +194,17 @@ public class SaveToCsv {
 	}
 
 	private static String FormatDate(LocalDate date) {
-		DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-		String formattedDate = date.format(myFormatObj);
+		String formattedDate = date.format(dateFormat);
 
 		return formattedDate;
 	}
 
 	private static String FormatTime(LocalTime time) {
-		DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("HH:mm:ss");
+		DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
 
-		String formattedTime = time.format(myFormatObj);
+		String formattedTime = time.format(timeFormat);
 
 		return formattedTime;
 	}

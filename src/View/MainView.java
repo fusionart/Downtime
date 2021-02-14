@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import Controller.Base;
+import Controller.SendMail;
 
 import javax.swing.JButton;
 import java.awt.Font;
@@ -19,6 +20,8 @@ import java.awt.event.ActionEvent;
 import org.apache.batik.swing.JSVGCanvas;
 import javax.swing.SwingConstants;
 import javax.swing.JSeparator;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MainView {
 

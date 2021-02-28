@@ -90,6 +90,7 @@ public class Base {
 	public static String smtpport;
 	public static String smtpusetls;
 	public static List<String> recipientsList = new ArrayList<String>();
+	public static Boolean isEmailSent = true;
 
 	public static Integer refreshTime;
 

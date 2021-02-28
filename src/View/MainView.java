@@ -6,6 +6,7 @@ import java.awt.EventQueue;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import Controller.Base;
 import Controller.SendMail;
@@ -22,6 +23,8 @@ import javax.swing.SwingConstants;
 import javax.swing.JSeparator;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class MainView {
 
@@ -59,7 +62,16 @@ public class MainView {
 		Image frameIcon = Toolkit.getDefaultToolkit().getImage(Base.icon);    
 		frmMain.setIconImage(frameIcon); 
 		frmMain.setResizable(false);
-		frmMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmMain.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		frmMain.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent windowEvent) {
+				if (Base.isEmailSent) {
+					System.exit(0);
+				}
+			}
+		});
+		
 		
 		JButton btnCreateDowntime = new JButton(Base.CREATE_DOWNTIME_LABEL);
 		btnCreateDowntime.setBackground(new Color(204, 204, 204));

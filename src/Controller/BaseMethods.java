@@ -90,6 +90,14 @@ public class BaseMethods {
 		if (dtm.isNoElectricity()) {
 			actionName = "Липса на ток";
 		}
+		
+		if (dtm.isShortReadjustment()) {
+			actionName = "Кратка пренастройка";
+		}
+		
+		if (dtm.isLongReadjustment()) {
+			actionName = "Дълга пренастройка";
+		}
 
 		if (dtm.isOther()) {
 			actionName = dtm.getOtherText();

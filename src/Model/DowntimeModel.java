@@ -19,6 +19,8 @@ public class DowntimeModel {
 	private boolean Breakdown;
 	private boolean Cleaning;
 	private boolean NoElectricity;
+	private boolean ShortReadjustment;
+	private boolean LongReadjustment;
 	private boolean Other;
 	private String OtherText;
 	private String Description;
@@ -53,6 +55,11 @@ public class DowntimeModel {
 		this.Author = data[17];
 		this.DateOfEntry = LocalDate.parse(data[18], dateFormat);
 		this.TimeOfEntry = LocalTime.parse(data[19]);
+		
+		if (data.length > 20) {
+			this.ShortReadjustment = Boolean.parseBoolean(data[20]);
+			this.LongReadjustment = Boolean.parseBoolean(data[21]);
+		}
 	}
 	
 	public int getNumber() {
@@ -139,6 +146,22 @@ public class DowntimeModel {
 	public void setNoElectricity(boolean noElectricity) {
 		NoElectricity = noElectricity;
 	}
+	public boolean isShortReadjustment() {
+		return ShortReadjustment;
+	}
+
+	public void setShortReadjustment(boolean shortReadjustment) {
+		ShortReadjustment = shortReadjustment;
+	}
+
+	public boolean isLongReadjustment() {
+		return LongReadjustment;
+	}
+
+	public void setLongReadjustment(boolean longReadjustment) {
+		LongReadjustment = longReadjustment;
+	}
+
 	public boolean isOther() {
 		return Other;
 	}

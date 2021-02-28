@@ -28,6 +28,11 @@ import java.awt.BorderLayout;
 import javax.swing.JTextArea;
 import java.awt.Font;
 import javax.swing.JScrollPane;
+import javax.swing.JCheckBox;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 public class ActionPanel extends JPanel {
 
@@ -48,6 +53,7 @@ public class ActionPanel extends JPanel {
 	private JTextField txtActionDowntime;
 	private JTextField txtApproved;
 	private JTextField txtActionAuthor;
+	private JCheckBox chckbxCloseSignal;
 
 	/**
 	 * Create the panel.
@@ -507,6 +513,27 @@ public class ActionPanel extends JPanel {
 		gbc_timePicker.gridy = 0;
 		pnlTimeAccepted.add(timePickerAcceptedTime, gbc_timePicker);
 		
+		chckbxCloseSignal = new JCheckBox("Затвори Сигнал");
+		chckbxCloseSignal.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentHidden(ComponentEvent e) {
+				txtActionDescription.setText("");
+			}
+		});
+		chckbxCloseSignal.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				if (chckbxCloseSignal.isSelected() && chckbxCloseSignal.isVisible()) {
+					txtActionDescription.setText("Не са необходми действия");
+				} else {
+					txtActionDescription.setText("");
+				}
+			}
+		});
+		chckbxCloseSignal.setBounds(290, 196, 265, 23);
+		chckbxCloseSignal.setFont(new Font("Century Gothic", Font.BOLD, 16));
+		chckbxCloseSignal.setVisible(false);
+		pnlAction.add(chckbxCloseSignal);
+		
 		
 		endTimeSettings.setDisplaySpinnerButtons(true);
 
@@ -612,5 +639,13 @@ public class ActionPanel extends JPanel {
 
 	public void setTxtActionAuthor(String txtActionAuthor) {
 		this.txtActionAuthor.setText(txtActionAuthor);
+	}
+	
+	public void setCloseSignalVisibility(Boolean isVisible) {
+		chckbxCloseSignal.setVisible(isVisible);
+	}
+	
+	public boolean getCloseSignalStatus() {
+		return chckbxCloseSignal.isSelected();
 	}
 }

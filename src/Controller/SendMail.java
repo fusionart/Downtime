@@ -41,6 +41,7 @@ public class SendMail {
 	}
 
 	public static void SendEmail(DowntimeModel downtime) {
+		Base.isEmailSent = false;
 		// Get the default Session object.
 		Session session = SendingMail();
 		
@@ -75,6 +76,7 @@ public class SendMail {
 				Transport.send(msg);
 
 				// System.out.println("EMail Sent Successfully!!");
+				Base.isEmailSent = true;
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

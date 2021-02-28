@@ -112,7 +112,7 @@ public class AllDowntimeView extends JFrame {
 		pnlMain.setLayout(null);
 
 		JPanel pnlRadioButtons = new JPanel();
-		pnlRadioButtons.setBounds(25, 40, 820, 23);
+		pnlRadioButtons.setBounds(25, 40, 1257, 23);
 		pnlMain.add(pnlRadioButtons);
 		pnlRadioButtons.setLayout(null);
 
@@ -216,10 +216,38 @@ public class AllDowntimeView extends JFrame {
 				}
 			}
 		});
+		
+		JRadioButton rdbtnShortReadjustment = new JRadioButton("Кратка пренастройка");
+		rdbtnShortReadjustment.setActionCommand("ShortReadjustment");
+		rdbtnShortReadjustment.setBounds(730, 0, 190, 23);
+		rdbtnShortReadjustment.setFont(Base.RADIO_BUTTON_FONT);
+		pnlRadioButtons.add(rdbtnShortReadjustment);
+		rdbtnGroup.add(rdbtnShortReadjustment);
+		rdbtnShortReadjustment.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					FillTable();
+				}
+			}
+		});
+		
+		JRadioButton rdbtnLongReadjustment = new JRadioButton("Дълга пренастройка");
+		rdbtnLongReadjustment.setActionCommand("LongReadjustment");
+		rdbtnLongReadjustment.setBounds(930, 0, 180, 23);
+		rdbtnLongReadjustment.setFont(Base.RADIO_BUTTON_FONT);
+		pnlRadioButtons.add(rdbtnLongReadjustment);
+		rdbtnGroup.add(rdbtnLongReadjustment);
+		rdbtnLongReadjustment.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					FillTable();
+				}
+			}
+		});
 
 		JRadioButton rdbtnOther = new JRadioButton("Други");
 		rdbtnOther.setActionCommand("Other");
-		rdbtnOther.setBounds(730, 0, 80, 23);
+		rdbtnOther.setBounds(1120, 0, 80, 23);
 		rdbtnOther.setFont(Base.RADIO_BUTTON_FONT);
 		pnlRadioButtons.add(rdbtnOther);
 		rdbtnGroup.add(rdbtnOther);
@@ -309,7 +337,7 @@ public class AllDowntimeView extends JFrame {
 				BaseMethods.ResizeColumnWidth(tbl);
 			}
 		});
-		btnRefresh.setBounds(1132, 52, 150, 30);
+		btnRefresh.setBounds(1132, 66, 150, 30);
 		btnRefresh.setFont(Base.DEFAULT_FONT);
 		pnlMain.add(btnRefresh);
 
@@ -319,7 +347,7 @@ public class AllDowntimeView extends JFrame {
 				ExportToExcel();
 			}
 		});
-		btnExportToExcel.setBounds(976, 52, 150, 30);
+		btnExportToExcel.setBounds(976, 66, 150, 30);
 		btnExportToExcel.setFont(Base.DEFAULT_FONT);
 		pnlMain.add(btnExportToExcel);
 
@@ -353,6 +381,8 @@ public class AllDowntimeView extends JFrame {
 		Boolean cleaning = false;
 		Boolean repair = false;
 		Boolean noElectricity = false;
+		Boolean shortReadjustment = false;
+		Boolean longReadjustment = false;
 		Boolean other = false;
 
 		Boolean allOf = false;
@@ -386,6 +416,12 @@ public class AllDowntimeView extends JFrame {
 			break;
 		case "NoElectricity":
 			noElectricity = true;
+			break;
+		case "ShortReadjustment":
+			shortReadjustment = true;
+			break;
+		case "LongReadjustment":
+			longReadjustment = true;
 			break;
 		case "Other":
 			other = true;
@@ -433,7 +469,7 @@ public class AllDowntimeView extends JFrame {
 			}
 
 			if (dtm.isBreakdown() && (all || breakdown)) {
-				actionName = "Авария";
+				actionName = BaseMethods.ActionName(dtm);
 
 				if (isAction && (allOf || onlyAction)) {
 					AddRowsToTable(actionName, dtm, actm);
@@ -445,7 +481,7 @@ public class AllDowntimeView extends JFrame {
 			}
 
 			if (dtm.isSignal() && (all || signal)) {
-				actionName = "Сигнал";
+				actionName = BaseMethods.ActionName(dtm);
 
 				if (isAction && (allOf || onlyAction)) {
 					AddRowsToTable(actionName, dtm, actm);
@@ -457,7 +493,7 @@ public class AllDowntimeView extends JFrame {
 			}
 
 			if (dtm.isMaterial() && (all || material)) {
-				actionName = "Материал";
+				actionName = BaseMethods.ActionName(dtm);
 
 				if (isAction && (allOf || onlyAction)) {
 					AddRowsToTable(actionName, dtm, actm);
@@ -469,7 +505,7 @@ public class AllDowntimeView extends JFrame {
 			}
 
 			if (dtm.isCleaning() && (all || cleaning)) {
-				actionName = "Почистване";
+				actionName = BaseMethods.ActionName(dtm);
 
 				if (isAction && (allOf || onlyAction)) {
 					AddRowsToTable(actionName, dtm, actm);
@@ -481,7 +517,7 @@ public class AllDowntimeView extends JFrame {
 			}
 
 			if (dtm.isRepair() && (all || repair)) {
-				actionName = "Поправка";
+				actionName = BaseMethods.ActionName(dtm);
 
 				if (isAction && (allOf || onlyAction)) {
 					AddRowsToTable(actionName, dtm, actm);
@@ -493,7 +529,31 @@ public class AllDowntimeView extends JFrame {
 			}
 
 			if (dtm.isNoElectricity() && (all || noElectricity)) {
-				actionName = "Липса на ток";
+				actionName = BaseMethods.ActionName(dtm);
+
+				if (isAction && (allOf || onlyAction)) {
+					AddRowsToTable(actionName, dtm, actm);
+				}
+
+				if (!isAction && (allOf || onlyEntered)) {
+					AddRowsToTable(actionName, dtm, actm);
+				}
+			}
+			
+			if (dtm.isShortReadjustment() && (all || shortReadjustment)) {
+				actionName = BaseMethods.ActionName(dtm);
+
+				if (isAction && (allOf || onlyAction)) {
+					AddRowsToTable(actionName, dtm, actm);
+				}
+
+				if (!isAction && (allOf || onlyEntered)) {
+					AddRowsToTable(actionName, dtm, actm);
+				}
+			}
+			
+			if (dtm.isLongReadjustment() && (all || longReadjustment)) {
+				actionName = BaseMethods.ActionName(dtm);
 
 				if (isAction && (allOf || onlyAction)) {
 					AddRowsToTable(actionName, dtm, actm);

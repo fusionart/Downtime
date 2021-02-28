@@ -223,7 +223,7 @@ public class ÃaintenanceTvView extends JFrame {
 				DowntimeModel dtm = BaseMethods.LoadDowntimeModel(Integer.toString(key));
 
 				if (dtm.isBreakdown() && (all || breakdown)) {
-					actionName = "¿‚‡Ëˇ";
+					actionName = BaseMethods.ActionName(dtm);
 
 					defaultTableModel.addRow(new Object[] { actionName, dtm.getNumber(),
 							dtm.getEntryDate().format(Base.dateFormat), dtm.getEntryTime(), dtm.getDescription(),
@@ -231,7 +231,7 @@ public class ÃaintenanceTvView extends JFrame {
 				}
 
 				if (dtm.isSignal() && (all || signal)) {
-					actionName = "—Ë„Ì‡Î";
+					actionName = BaseMethods.ActionName(dtm);
 
 					defaultTableModel.addRow(new Object[] { actionName, dtm.getNumber(),
 							dtm.getEntryDate().format(Base.dateFormat), dtm.getEntryTime(), dtm.getDescription(),

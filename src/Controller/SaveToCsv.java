@@ -12,6 +12,8 @@ import java.time.format.DateTimeFormatter;
 
 import javax.swing.JOptionPane;
 
+import org.apache.poi.ss.formula.functions.Today;
+
 import Model.ActionModel;
 import Model.DowntimeModel;
 
@@ -189,15 +191,24 @@ public class SaveToCsv {
 		line.append(FormatDate(downtime.getDateOfEntry()));
 		line.append(Base.DELIMITER);
 		line.append(FormatTime(downtime.getTimeOfEntry()));
+		line.append(Base.DELIMITER);
+		line.append(downtime.isShortReadjustment());
+		line.append(Base.DELIMITER);
+		line.append(downtime.isLongReadjustment());
 
 		return line.toString();
 	}
 
 	private static String FormatDate(LocalDate date) {
+		String formattedDate = null;
 		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
-		String formattedDate = date.format(dateFormat);
-
+		
+		if (date != null) {
+			formattedDate = date.format(dateFormat);
+		} else {
+			formattedDate = LocalDate.now().format(dateFormat);
+		}
+		
 		return formattedDate;
 	}
 

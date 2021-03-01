@@ -217,9 +217,9 @@ public class AllDowntimeView extends JFrame {
 			}
 		});
 		
-		JRadioButton rdbtnShortReadjustment = new JRadioButton("Кратка пренастройка");
+		JRadioButton rdbtnShortReadjustment = new JRadioButton("Кратка настройка");
 		rdbtnShortReadjustment.setActionCommand("ShortReadjustment");
-		rdbtnShortReadjustment.setBounds(730, 0, 190, 23);
+		rdbtnShortReadjustment.setBounds(730, 0, 160, 23);
 		rdbtnShortReadjustment.setFont(Base.RADIO_BUTTON_FONT);
 		pnlRadioButtons.add(rdbtnShortReadjustment);
 		rdbtnGroup.add(rdbtnShortReadjustment);
@@ -231,9 +231,9 @@ public class AllDowntimeView extends JFrame {
 			}
 		});
 		
-		JRadioButton rdbtnLongReadjustment = new JRadioButton("Дълга пренастройка");
+		JRadioButton rdbtnLongReadjustment = new JRadioButton("Пълна настройка");
 		rdbtnLongReadjustment.setActionCommand("LongReadjustment");
-		rdbtnLongReadjustment.setBounds(930, 0, 180, 23);
+		rdbtnLongReadjustment.setBounds(900, 0, 160, 23);
 		rdbtnLongReadjustment.setFont(Base.RADIO_BUTTON_FONT);
 		pnlRadioButtons.add(rdbtnLongReadjustment);
 		rdbtnGroup.add(rdbtnLongReadjustment);
@@ -247,7 +247,7 @@ public class AllDowntimeView extends JFrame {
 
 		JRadioButton rdbtnOther = new JRadioButton("Други");
 		rdbtnOther.setActionCommand("Other");
-		rdbtnOther.setBounds(1120, 0, 80, 23);
+		rdbtnOther.setBounds(1070, 0, 80, 23);
 		rdbtnOther.setFont(Base.RADIO_BUTTON_FONT);
 		pnlRadioButtons.add(rdbtnOther);
 		rdbtnGroup.add(rdbtnOther);

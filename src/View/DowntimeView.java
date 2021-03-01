@@ -252,7 +252,7 @@ public class DowntimeView {
 		pnlTime.add(cboEntryTime, gbc_cboEntryTime);
 
 		JPanel pnlWorkshop = new JPanel();
-		pnlWorkshop.setBounds(275, 121, 264, 74);
+		pnlWorkshop.setBounds(275, 121, 250, 74);
 		pnlWorkshop.setBackground(new Color(255, 255, 255, 0));
 		pnlDowntime.add(pnlWorkshop);
 		GridBagLayout gbl_pnlWorkshop = new GridBagLayout();
@@ -283,7 +283,7 @@ public class DowntimeView {
 
 		JPanel pnlFieldMachine = new JPanel();
 		pnlFieldMachine.setBackground(new Color(255, 255, 255, 0));
-		pnlFieldMachine.setBounds(275, 205, 264, 74);
+		pnlFieldMachine.setBounds(275, 205, 250, 74);
 		pnlDowntime.add(pnlFieldMachine);
 		GridBagLayout gbl_pnlFIeldMachine = new GridBagLayout();
 		gbl_pnlFIeldMachine.columnWidths = new int[] { 250, 0 };
@@ -403,155 +403,155 @@ public class DowntimeView {
 
 		JPanel pnlRadioButtons = new JPanel();
 		pnlRadioButtons.setBackground(new Color(255, 255, 255, 0));
-		pnlRadioButtons.setBounds(275, 289, 264, 242);
+		pnlRadioButtons.setBounds(275, 289, 250, 242);
 		pnlDowntime.add(pnlRadioButtons);
 
 		radioButtonGroup = new ButtonGroup();
 		GridBagLayout gbl_pnlRadioButtons = new GridBagLayout();
-		gbl_pnlRadioButtons.columnWidths = new int[]{125, 125, 0};
-		gbl_pnlRadioButtons.rowHeights = new int[]{48, 48, 48, 48, 48, 0};
-		gbl_pnlRadioButtons.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
-		gbl_pnlRadioButtons.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_pnlRadioButtons.columnWidths = new int[] { 125, 125, 0 };
+		gbl_pnlRadioButtons.rowHeights = new int[] { 48, 48, 48, 48, 48, 0 };
+		gbl_pnlRadioButtons.columnWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
+		gbl_pnlRadioButtons.rowWeights = new double[] { 0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE };
 		pnlRadioButtons.setLayout(gbl_pnlRadioButtons);
-		
-				rdbtnOther = new JRadioButton("Друго");
-				rdbtnOther.addItemListener(new ItemListener() {
-					public void itemStateChanged(ItemEvent e) {
-						if (e.getStateChange() == ItemEvent.SELECTED) {
-							txtOther.setEnabled(true);
-							txtOther.requestFocus();
-						} else {
-							txtOther.setEnabled(false);
-							txtOther.setText(null);
-						}
-					}
-				});
-				
-						rdbtnSignal = new JRadioButton("Сигнал");
-						rdbtnSignal.addChangeListener(new ChangeListener() {
-							public void stateChanged(ChangeEvent e) {
-								if (chckbxEnterAction.isSelected()) {
-									actionPanel.setVisible(false);
-									actionPanel.setCloseSignalVisibility(rdbtnSignal.isSelected());
-									actionPanel.setVisible(true);
-								}
-							}
-						});
-						// rdbtnSignal.setBackground(new Color(255, 255, 255, 0));
-						rdbtnSignal.setFont(Base.RADIO_BUTTON_FONT);
-						GridBagConstraints gbc_rdbtnSignal = new GridBagConstraints();
-						gbc_rdbtnSignal.fill = GridBagConstraints.BOTH;
-						gbc_rdbtnSignal.insets = new Insets(0, 0, 5, 5);
-						gbc_rdbtnSignal.gridx = 0;
-						gbc_rdbtnSignal.gridy = 0;
-						pnlRadioButtons.add(rdbtnSignal, gbc_rdbtnSignal);
-						radioButtonGroup.add(rdbtnSignal);
-						rdbtnSignal.setActionCommand("Signal");
-				
-						rdbtnBreakdown = new JRadioButton("Авария");
-						// rdbtnBreakdown.setBackground(new Color(255, 255, 255, 0));
-						rdbtnBreakdown.setFont(Base.RADIO_BUTTON_FONT);
-						GridBagConstraints gbc_rdbtnBreakdown = new GridBagConstraints();
-						gbc_rdbtnBreakdown.fill = GridBagConstraints.BOTH;
-						gbc_rdbtnBreakdown.insets = new Insets(0, 0, 5, 0);
-						gbc_rdbtnBreakdown.gridx = 1;
-						gbc_rdbtnBreakdown.gridy = 0;
-						pnlRadioButtons.add(rdbtnBreakdown, gbc_rdbtnBreakdown);
-						radioButtonGroup.add(rdbtnBreakdown);
-						rdbtnBreakdown.setActionCommand("Breakdown");
-				
-						rdbtnMaterial = new JRadioButton("Материал");
-						// rdbtnMaterial.setBackground(new Color(255, 255, 255, 0));
-						rdbtnMaterial.setFont(Base.RADIO_BUTTON_FONT);
-						GridBagConstraints gbc_rdbtnMaterial = new GridBagConstraints();
-						gbc_rdbtnMaterial.fill = GridBagConstraints.BOTH;
-						gbc_rdbtnMaterial.insets = new Insets(0, 0, 5, 5);
-						gbc_rdbtnMaterial.gridx = 0;
-						gbc_rdbtnMaterial.gridy = 1;
-						pnlRadioButtons.add(rdbtnMaterial, gbc_rdbtnMaterial);
-						radioButtonGroup.add(rdbtnMaterial);
-						rdbtnMaterial.setActionCommand("Material");
-						
-								rdbtnCleaning = new JRadioButton("Почистване");
-								// rdbtnCleaning.setBackground(new Color(255, 255, 255, 0));
-								rdbtnCleaning.setFont(Base.RADIO_BUTTON_FONT);
-								GridBagConstraints gbc_rdbtnCleaning = new GridBagConstraints();
-								gbc_rdbtnCleaning.fill = GridBagConstraints.BOTH;
-								gbc_rdbtnCleaning.insets = new Insets(0, 0, 5, 0);
-								gbc_rdbtnCleaning.gridx = 1;
-								gbc_rdbtnCleaning.gridy = 1;
-								pnlRadioButtons.add(rdbtnCleaning, gbc_rdbtnCleaning);
-								radioButtonGroup.add(rdbtnCleaning);
-								rdbtnCleaning.setActionCommand("Cleaning");
-								
-										rdbtnRepair = new JRadioButton("Поправка");
-										// rdbtnRepair.setBackground(new Color(255, 255, 255, 0));
-										rdbtnRepair.setFont(Base.RADIO_BUTTON_FONT);
-										GridBagConstraints gbc_rdbtnRepair = new GridBagConstraints();
-										gbc_rdbtnRepair.fill = GridBagConstraints.BOTH;
-										gbc_rdbtnRepair.insets = new Insets(0, 0, 5, 5);
-										gbc_rdbtnRepair.gridx = 0;
-										gbc_rdbtnRepair.gridy = 2;
-										pnlRadioButtons.add(rdbtnRepair, gbc_rdbtnRepair);
-										radioButtonGroup.add(rdbtnRepair);
-										rdbtnRepair.setActionCommand("Repair");
-						
-								rdbtnNoElectricity = new JRadioButton("Липса на ток");
-								// rdbtnNoElectricity.setBackground(new Color(255, 255, 255, 0));
-								rdbtnNoElectricity.setFont(Base.RADIO_BUTTON_FONT);
-								GridBagConstraints gbc_rdbtnNoElectricity = new GridBagConstraints();
-								gbc_rdbtnNoElectricity.fill = GridBagConstraints.BOTH;
-								gbc_rdbtnNoElectricity.insets = new Insets(0, 0, 5, 0);
-								gbc_rdbtnNoElectricity.gridx = 1;
-								gbc_rdbtnNoElectricity.gridy = 2;
-								pnlRadioButtons.add(rdbtnNoElectricity, gbc_rdbtnNoElectricity);
-								radioButtonGroup.add(rdbtnNoElectricity);
-								rdbtnNoElectricity.setActionCommand("NoElectricity");
-				
-						rdbtnShortReadjustment = new JRadioButton("<html>Кратка \nпренастройка</html>");
-						// rdbtnNoElectricity.setBackground(new Color(255, 255, 255, 0));
-						rdbtnShortReadjustment.setFont(Base.RADIO_BUTTON_FONT);
-						GridBagConstraints gbc_rdbtnShortReadjustment = new GridBagConstraints();
-						gbc_rdbtnShortReadjustment.fill = GridBagConstraints.BOTH;
-						gbc_rdbtnShortReadjustment.insets = new Insets(0, 0, 5, 5);
-						gbc_rdbtnShortReadjustment.gridx = 0;
-						gbc_rdbtnShortReadjustment.gridy = 3;
-						pnlRadioButtons.add(rdbtnShortReadjustment, gbc_rdbtnShortReadjustment);
-						radioButtonGroup.add(rdbtnShortReadjustment);
-						rdbtnShortReadjustment.setActionCommand("ShortReadjustment");
-				
-						rdbtnLongReadjustment = new JRadioButton("<html>Дълга \nпренастройка</html>");
-						// rdbtnNoElectricity.setBackground(new Color(255, 255, 255, 0));
-						rdbtnLongReadjustment.setFont(Base.RADIO_BUTTON_FONT);
-						GridBagConstraints gbc_rdbtnLongReadjustment = new GridBagConstraints();
-						gbc_rdbtnLongReadjustment.fill = GridBagConstraints.BOTH;
-						gbc_rdbtnLongReadjustment.insets = new Insets(0, 0, 5, 0);
-						gbc_rdbtnLongReadjustment.gridx = 1;
-						gbc_rdbtnLongReadjustment.gridy = 3;
-						pnlRadioButtons.add(rdbtnLongReadjustment, gbc_rdbtnLongReadjustment);
-						radioButtonGroup.add(rdbtnLongReadjustment);
-						rdbtnLongReadjustment.setActionCommand("LongReadjustment");
-				// rdbtnOther.setBackground(new Color(255, 255, 255, 0));
-				rdbtnOther.setFont(Base.RADIO_BUTTON_FONT);
-				GridBagConstraints gbc_rdbtnOther = new GridBagConstraints();
-				gbc_rdbtnOther.fill = GridBagConstraints.BOTH;
-				gbc_rdbtnOther.insets = new Insets(0, 0, 0, 5);
-				gbc_rdbtnOther.gridx = 0;
-				gbc_rdbtnOther.gridy = 4;
-				pnlRadioButtons.add(rdbtnOther, gbc_rdbtnOther);
-				radioButtonGroup.add(rdbtnOther);
-				rdbtnOther.setActionCommand("Other");
-		
-				txtOther = new JTextField();
-				txtOther.setEnabled(false);
-				txtOther.setFont(Base.DEFAULT_FONT);
-				txtOther.setForeground(Base.TEXT_FIELD_COLOR);
-				GridBagConstraints gbc_txtOther = new GridBagConstraints();
-				gbc_txtOther.fill = GridBagConstraints.BOTH;
-				gbc_txtOther.gridx = 1;
-				gbc_txtOther.gridy = 4;
-				pnlRadioButtons.add(txtOther, gbc_txtOther);
-				txtOther.setColumns(10);
+
+		rdbtnOther = new JRadioButton("Друго");
+		rdbtnOther.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					txtOther.setEnabled(true);
+					txtOther.requestFocus();
+				} else {
+					txtOther.setEnabled(false);
+					txtOther.setText(null);
+				}
+			}
+		});
+
+		rdbtnSignal = new JRadioButton("Сигнал");
+		rdbtnSignal.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				if (chckbxEnterAction.isSelected()) {
+					actionPanel.setVisible(false);
+					actionPanel.setCloseSignalVisibility(rdbtnSignal.isSelected());
+					actionPanel.setVisible(true);
+				}
+			}
+		});
+		// rdbtnSignal.setBackground(new Color(255, 255, 255, 0));
+		rdbtnSignal.setFont(Base.RADIO_BUTTON_FONT);
+		GridBagConstraints gbc_rdbtnSignal = new GridBagConstraints();
+		gbc_rdbtnSignal.fill = GridBagConstraints.BOTH;
+		gbc_rdbtnSignal.insets = new Insets(0, 0, 5, 5);
+		gbc_rdbtnSignal.gridx = 0;
+		gbc_rdbtnSignal.gridy = 0;
+		pnlRadioButtons.add(rdbtnSignal, gbc_rdbtnSignal);
+		radioButtonGroup.add(rdbtnSignal);
+		rdbtnSignal.setActionCommand("Signal");
+
+		rdbtnBreakdown = new JRadioButton("Авария");
+		// rdbtnBreakdown.setBackground(new Color(255, 255, 255, 0));
+		rdbtnBreakdown.setFont(Base.RADIO_BUTTON_FONT);
+		GridBagConstraints gbc_rdbtnBreakdown = new GridBagConstraints();
+		gbc_rdbtnBreakdown.fill = GridBagConstraints.BOTH;
+		gbc_rdbtnBreakdown.insets = new Insets(0, 0, 5, 0);
+		gbc_rdbtnBreakdown.gridx = 1;
+		gbc_rdbtnBreakdown.gridy = 0;
+		pnlRadioButtons.add(rdbtnBreakdown, gbc_rdbtnBreakdown);
+		radioButtonGroup.add(rdbtnBreakdown);
+		rdbtnBreakdown.setActionCommand("Breakdown");
+
+		rdbtnMaterial = new JRadioButton("Материал");
+		// rdbtnMaterial.setBackground(new Color(255, 255, 255, 0));
+		rdbtnMaterial.setFont(Base.RADIO_BUTTON_FONT);
+		GridBagConstraints gbc_rdbtnMaterial = new GridBagConstraints();
+		gbc_rdbtnMaterial.fill = GridBagConstraints.BOTH;
+		gbc_rdbtnMaterial.insets = new Insets(0, 0, 5, 5);
+		gbc_rdbtnMaterial.gridx = 0;
+		gbc_rdbtnMaterial.gridy = 1;
+		pnlRadioButtons.add(rdbtnMaterial, gbc_rdbtnMaterial);
+		radioButtonGroup.add(rdbtnMaterial);
+		rdbtnMaterial.setActionCommand("Material");
+
+		rdbtnCleaning = new JRadioButton("Почистване");
+		// rdbtnCleaning.setBackground(new Color(255, 255, 255, 0));
+		rdbtnCleaning.setFont(Base.RADIO_BUTTON_FONT);
+		GridBagConstraints gbc_rdbtnCleaning = new GridBagConstraints();
+		gbc_rdbtnCleaning.fill = GridBagConstraints.BOTH;
+		gbc_rdbtnCleaning.insets = new Insets(0, 0, 5, 0);
+		gbc_rdbtnCleaning.gridx = 1;
+		gbc_rdbtnCleaning.gridy = 1;
+		pnlRadioButtons.add(rdbtnCleaning, gbc_rdbtnCleaning);
+		radioButtonGroup.add(rdbtnCleaning);
+		rdbtnCleaning.setActionCommand("Cleaning");
+
+		rdbtnRepair = new JRadioButton("Поправка");
+		// rdbtnRepair.setBackground(new Color(255, 255, 255, 0));
+		rdbtnRepair.setFont(Base.RADIO_BUTTON_FONT);
+		GridBagConstraints gbc_rdbtnRepair = new GridBagConstraints();
+		gbc_rdbtnRepair.fill = GridBagConstraints.BOTH;
+		gbc_rdbtnRepair.insets = new Insets(0, 0, 5, 5);
+		gbc_rdbtnRepair.gridx = 0;
+		gbc_rdbtnRepair.gridy = 2;
+		pnlRadioButtons.add(rdbtnRepair, gbc_rdbtnRepair);
+		radioButtonGroup.add(rdbtnRepair);
+		rdbtnRepair.setActionCommand("Repair");
+
+		rdbtnNoElectricity = new JRadioButton("Липса на ток");
+		// rdbtnNoElectricity.setBackground(new Color(255, 255, 255, 0));
+		rdbtnNoElectricity.setFont(Base.RADIO_BUTTON_FONT);
+		GridBagConstraints gbc_rdbtnNoElectricity = new GridBagConstraints();
+		gbc_rdbtnNoElectricity.fill = GridBagConstraints.BOTH;
+		gbc_rdbtnNoElectricity.insets = new Insets(0, 0, 5, 0);
+		gbc_rdbtnNoElectricity.gridx = 1;
+		gbc_rdbtnNoElectricity.gridy = 2;
+		pnlRadioButtons.add(rdbtnNoElectricity, gbc_rdbtnNoElectricity);
+		radioButtonGroup.add(rdbtnNoElectricity);
+		rdbtnNoElectricity.setActionCommand("NoElectricity");
+
+		rdbtnShortReadjustment = new JRadioButton("<html>Кратка \nнастройка</html>");
+		// rdbtnNoElectricity.setBackground(new Color(255, 255, 255, 0));
+		rdbtnShortReadjustment.setFont(Base.RADIO_BUTTON_FONT);
+		GridBagConstraints gbc_rdbtnShortReadjustment = new GridBagConstraints();
+		gbc_rdbtnShortReadjustment.fill = GridBagConstraints.BOTH;
+		gbc_rdbtnShortReadjustment.insets = new Insets(0, 0, 5, 5);
+		gbc_rdbtnShortReadjustment.gridx = 0;
+		gbc_rdbtnShortReadjustment.gridy = 3;
+		pnlRadioButtons.add(rdbtnShortReadjustment, gbc_rdbtnShortReadjustment);
+		radioButtonGroup.add(rdbtnShortReadjustment);
+		rdbtnShortReadjustment.setActionCommand("ShortReadjustment");
+
+		rdbtnLongReadjustment = new JRadioButton("<html>Пълна \nнастройка</html>");
+		// rdbtnNoElectricity.setBackground(new Color(255, 255, 255, 0));
+		rdbtnLongReadjustment.setFont(Base.RADIO_BUTTON_FONT);
+		GridBagConstraints gbc_rdbtnLongReadjustment = new GridBagConstraints();
+		gbc_rdbtnLongReadjustment.fill = GridBagConstraints.BOTH;
+		gbc_rdbtnLongReadjustment.insets = new Insets(0, 0, 5, 0);
+		gbc_rdbtnLongReadjustment.gridx = 1;
+		gbc_rdbtnLongReadjustment.gridy = 3;
+		pnlRadioButtons.add(rdbtnLongReadjustment, gbc_rdbtnLongReadjustment);
+		radioButtonGroup.add(rdbtnLongReadjustment);
+		rdbtnLongReadjustment.setActionCommand("LongReadjustment");
+		// rdbtnOther.setBackground(new Color(255, 255, 255, 0));
+		rdbtnOther.setFont(Base.RADIO_BUTTON_FONT);
+		GridBagConstraints gbc_rdbtnOther = new GridBagConstraints();
+		gbc_rdbtnOther.fill = GridBagConstraints.BOTH;
+		gbc_rdbtnOther.insets = new Insets(0, 0, 0, 5);
+		gbc_rdbtnOther.gridx = 0;
+		gbc_rdbtnOther.gridy = 4;
+		pnlRadioButtons.add(rdbtnOther, gbc_rdbtnOther);
+		radioButtonGroup.add(rdbtnOther);
+		rdbtnOther.setActionCommand("Other");
+
+		txtOther = new JTextField();
+		txtOther.setEnabled(false);
+		txtOther.setFont(Base.DEFAULT_FONT);
+		txtOther.setForeground(Base.TEXT_FIELD_COLOR);
+		GridBagConstraints gbc_txtOther = new GridBagConstraints();
+		gbc_txtOther.fill = GridBagConstraints.BOTH;
+		gbc_txtOther.gridx = 1;
+		gbc_txtOther.gridy = 4;
+		pnlRadioButtons.add(txtOther, gbc_txtOther);
+		txtOther.setColumns(10);
 
 		JPanel pnlDescription = new JPanel();
 		pnlDescription.setBackground(new Color(255, 255, 255, 0));
@@ -575,7 +575,7 @@ public class DowntimeView {
 
 		JPanel pnlAuthor = new JPanel();
 		pnlAuthor.setBackground(new Color(255, 255, 255, 0));
-		pnlAuthor.setBounds(275, 541, 264, 74);
+		pnlAuthor.setBounds(275, 541, 250, 74);
 		pnlDowntime.add(pnlAuthor);
 		GridBagLayout gbl_pnlAuthor = new GridBagLayout();
 		gbl_pnlAuthor.columnWidths = new int[] { 250, 0 };
@@ -648,46 +648,49 @@ public class DowntimeView {
 
 						Base.LoadDowntimeDb();
 
-						if (!chckbxEnterAction.isSelected()) {
-							frmMain.dispose();
-							new MainView();
+						frmMain.dispose();
+						new MainView();
 
-							if (Base.recipientsList.size() > 0) {
-								// create background thread for sending email
-								ExecutorService emailExecutor = Executors.newSingleThreadExecutor();
-								emailExecutor.execute(new Runnable() {
-									@Override
-									public void run() {
-										SendMail.SendEmail(downtime);
-									}
-								});
-								emailExecutor.shutdown();
-							}
+						if (Base.recipientsList.size() > 0) {
+							// create background thread for sending email
+							ExecutorService emailExecutor = Executors.newSingleThreadExecutor();
+							emailExecutor.execute(new Runnable() {
+								@Override
+								public void run() {
+									SendMail.SendEmail(downtime);
+								}
+							});
+							emailExecutor.shutdown();
 						}
 					}
 				}
 
-				if (chckbxEnterAction.isSelected()) {
+				if (!isDowntimeLoaded && chckbxEnterAction.isSelected()) {
 					isValidDowntime = ValidateDowntime();
 					if (ValidateAction() && isValidDowntime) {
 						DowntimeModel downtime = SaveDowntime();
 						SaveToCsv.SaveDowntime(downtime);
-						
+
 						ActionModel action = SaveAction();
 						SaveToCsv.SaveAction(action);
 
 						Base.LoadDowntimeDb();
 						Base.LoadActionDb();
 
-						if (isDowntimeLoaded) {
-							frmMain.dispose();
-							new MainView();
-						} else {
-							if (isValidDowntime) {
-								frmMain.dispose();
-								new MainView();
-							}
-						}
+						frmMain.dispose();
+						new MainView();
+					}
+				}
+
+				if (isDowntimeLoaded) {
+					if (ValidateAction()) {
+						ActionModel action = SaveAction();
+						SaveToCsv.SaveAction(action);
+
+						Base.LoadActionDb();
+
+						frmMain.dispose();
+						new MainView();
 					}
 				}
 			}

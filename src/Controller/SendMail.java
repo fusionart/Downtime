@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.Properties;
 
 public class SendMail {
-	private static Session SendingMail() {
+	private static Session CreateSession() {
 		// Sender's email ID needs to be mentioned
 		String fromEmail = Base.smtpuser;
 		String password = Base.smtppassword;
@@ -43,14 +43,14 @@ public class SendMail {
 	public static void SendEmail(DowntimeModel downtime) {
 		Base.isEmailSent = false;
 		// Get the default Session object.
-		Session session = SendingMail();
-		
-		String subject = "Ново непродуктивно време No " + String.valueOf(downtime.getNumber()) + " - " + BaseMethods.ActionName(downtime);
-		String body = "Въведено е ново непродуктивно време No " + String.valueOf(downtime.getNumber()) + " - " + BaseMethods.ActionName(downtime) + "." + "\r\n" + 
-				"Цех: " + downtime.getWorkshop() + "." + "\r\n" +
-				"Участък/машина: " + downtime.getFieldMachine() + "." + "\r\n" +
-				"Описание: " + downtime.getDescription() + "." + "\r\n" + 
-				"Въведено от: " + downtime.getAuthor();
+		Session session = CreateSession();
+
+		String subject = "Ново непродуктивно време No " + String.valueOf(downtime.getNumber()) + " - "
+				+ BaseMethods.ActionName(downtime);
+		String body = "Въведено е ново непродуктивно време No " + String.valueOf(downtime.getNumber()) + " - "
+				+ BaseMethods.ActionName(downtime) + "." + "\r\n" + "Цех: " + downtime.getWorkshop() + "." + "\r\n"
+				+ "Участък/машина: " + downtime.getFieldMachine() + "." + "\r\n" + "Описание: "
+				+ downtime.getDescription() + "." + "\r\n" + "Въведено от: " + downtime.getAuthor();
 
 		for (String email : Base.recipientsList) {
 
@@ -76,11 +76,11 @@ public class SendMail {
 				Transport.send(msg);
 
 				// System.out.println("EMail Sent Successfully!!");
-				Base.isEmailSent = true;
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
+		Base.isEmailSent = true;
 	}
-
 }

@@ -92,11 +92,11 @@ public class BaseMethods {
 		}
 		
 		if (dtm.isShortReadjustment()) {
-			actionName = "Кратка пренастройка";
+			actionName = "Кратка настройка";
 		}
 		
 		if (dtm.isLongReadjustment()) {
-			actionName = "Дълга пренастройка";
+			actionName = "Пълна настройка";
 		}
 
 		if (dtm.isOther()) {

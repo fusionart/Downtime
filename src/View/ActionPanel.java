@@ -19,6 +19,7 @@ import com.github.lgooddatepicker.components.DatePickerSettings.DateArea;
 import com.github.lgooddatepicker.components.TimePickerSettings.TimeArea;
 
 import Controller.Base;
+import Controller.BaseMethods;
 
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
@@ -33,6 +34,8 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class ActionPanel extends JPanel {
 
@@ -311,7 +314,7 @@ public class ActionPanel extends JPanel {
 		scrollPane_1.setViewportView(txtActionRecommendation);
 		txtActionRecommendation.setRows(3);
 		txtActionRecommendation.setFont(Base.DEFAULT_FONT);
-		
+
 		JPanel pnlAcceptedName = new JPanel();
 		pnlAcceptedName.setBackground(new Color(255, 255, 255, 0));
 		pnlAcceptedName.setBounds(15, 373, 265, 74);
@@ -341,7 +344,7 @@ public class ActionPanel extends JPanel {
 		gbc_txtAccepted.gridx = 0;
 		gbc_txtAccepted.gridy = 1;
 		pnlAcceptedName.add(txtAccepted, gbc_txtAccepted);
-		
+
 		JPanel pnlActionDowntime = new JPanel();
 		pnlActionDowntime.setBackground(new Color(255, 255, 255, 0));
 		pnlActionDowntime.setBounds(15, 457, 265, 74);
@@ -363,6 +366,17 @@ public class ActionPanel extends JPanel {
 		pnlActionDowntime.add(lblActionDowntime, gbc_lblActionDowntime);
 
 		txtActionDowntime = new JTextField();
+		txtActionDowntime.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (!txtActionDowntime.getText().isEmpty()) {
+					if (!BaseMethods.CheckIsNumber(txtActionDowntime.getText())) {
+						txtActionDowntime.setText("");
+						txtActionDowntime.requestFocus();
+					}
+				}
+			}
+		});
 		txtActionDowntime.setFont(Base.DEFAULT_FONT);
 		txtActionDowntime.setForeground(Base.TEXT_FIELD_COLOR);
 		GridBagConstraints gbc_txtActionDowntime = new GridBagConstraints();
@@ -431,18 +445,18 @@ public class ActionPanel extends JPanel {
 		gbc_txtActionAuthor.gridx = 0;
 		gbc_txtActionAuthor.gridy = 1;
 		pnlActionAuthor.add(txtActionAuthor, gbc_txtActionAuthor);
-		
+
 		JPanel pnlAcceptedTime = new JPanel();
 		pnlAcceptedTime.setBackground(new Color(255, 255, 255, 0));
 		pnlAcceptedTime.setBounds(290, 373, 265, 79);
 		pnlAction.add(pnlAcceptedTime);
 		GridBagLayout gbl_pnlAcceptedTime = new GridBagLayout();
-		gbl_pnlAcceptedTime.columnWidths = new int[]{265, 0};
-		gbl_pnlAcceptedTime.rowHeights = new int[]{37, 37, 0};
-		gbl_pnlAcceptedTime.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_pnlAcceptedTime.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		gbl_pnlAcceptedTime.columnWidths = new int[] { 265, 0 };
+		gbl_pnlAcceptedTime.rowHeights = new int[] { 37, 37, 0 };
+		gbl_pnlAcceptedTime.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
+		gbl_pnlAcceptedTime.rowWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
 		pnlAcceptedTime.setLayout(gbl_pnlAcceptedTime);
-		
+
 		JPanel pnlDateAccepted = new JPanel();
 		pnlDateAccepted.setBackground(new Color(255, 255, 255, 0));
 		GridBagConstraints gbc_pnlDateAccepted = new GridBagConstraints();
@@ -452,12 +466,12 @@ public class ActionPanel extends JPanel {
 		gbc_pnlDateAccepted.gridy = 0;
 		pnlAcceptedTime.add(pnlDateAccepted, gbc_pnlDateAccepted);
 		GridBagLayout gbl_pnlDateAccepted = new GridBagLayout();
-		gbl_pnlDateAccepted.columnWidths = new int[]{50, 200, 0};
-		gbl_pnlDateAccepted.rowHeights = new int[]{37, 0};
-		gbl_pnlDateAccepted.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
-		gbl_pnlDateAccepted.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		gbl_pnlDateAccepted.columnWidths = new int[] { 50, 200, 0 };
+		gbl_pnlDateAccepted.rowHeights = new int[] { 37, 0 };
+		gbl_pnlDateAccepted.columnWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
+		gbl_pnlDateAccepted.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
 		pnlDateAccepted.setLayout(gbl_pnlDateAccepted);
-		
+
 		JLabel lblDateAccepted = new JLabel("Дата");
 		lblDateAccepted.setFont(new Font("Century Gothic", Font.BOLD, 16));
 		GridBagConstraints gbc_lblDateAccepted = new GridBagConstraints();
@@ -466,7 +480,7 @@ public class ActionPanel extends JPanel {
 		gbc_lblDateAccepted.gridx = 0;
 		gbc_lblDateAccepted.gridy = 0;
 		pnlDateAccepted.add(lblDateAccepted, gbc_lblDateAccepted);
-		
+
 		DatePickerSettings dateSettingsAcceptedDate = new DatePickerSettings(Base.LOCALE);
 		dateSettingsAcceptedDate.setFirstDayOfWeek(DayOfWeek.MONDAY);
 		dateSettingsAcceptedDate.setColor(DateArea.DatePickerTextValidDate, Base.TEXT_FIELD_COLOR);
@@ -475,14 +489,14 @@ public class ActionPanel extends JPanel {
 		timeSettingsAcceptedTime.setColor(TimeArea.TimePickerTextValidTime, Color.blue);
 		timeSettingsAcceptedTime.initialTime = LocalTime.now();
 		timeSettingsAcceptedTime.setDisplaySpinnerButtons(true);
-		
+
 		datePickerAcceptedDate = new DatePicker(dateSettingsAcceptedDate);
 		GridBagConstraints gbc_datePicker = new GridBagConstraints();
 		gbc_datePicker.fill = GridBagConstraints.BOTH;
 		gbc_datePicker.gridx = 1;
 		gbc_datePicker.gridy = 0;
 		pnlDateAccepted.add(datePickerAcceptedDate, gbc_datePicker);
-		
+
 		JPanel pnlTimeAccepted = new JPanel();
 		pnlTimeAccepted.setBackground(new Color(255, 255, 255, 0));
 		GridBagConstraints gbc_pnlTimeAccepted = new GridBagConstraints();
@@ -491,12 +505,12 @@ public class ActionPanel extends JPanel {
 		gbc_pnlTimeAccepted.gridy = 1;
 		pnlAcceptedTime.add(pnlTimeAccepted, gbc_pnlTimeAccepted);
 		GridBagLayout gbl_pnlTimeAccepted = new GridBagLayout();
-		gbl_pnlTimeAccepted.columnWidths = new int[]{50, 200, 0};
-		gbl_pnlTimeAccepted.rowHeights = new int[]{37, 0};
-		gbl_pnlTimeAccepted.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
-		gbl_pnlTimeAccepted.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		gbl_pnlTimeAccepted.columnWidths = new int[] { 50, 200, 0 };
+		gbl_pnlTimeAccepted.rowHeights = new int[] { 37, 0 };
+		gbl_pnlTimeAccepted.columnWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
+		gbl_pnlTimeAccepted.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
 		pnlTimeAccepted.setLayout(gbl_pnlTimeAccepted);
-		
+
 		JLabel lblTimeAccepted = new JLabel("Час");
 		lblTimeAccepted.setFont(new Font("Century Gothic", Font.BOLD, 16));
 		GridBagConstraints gbc_lblTimeAccepted = new GridBagConstraints();
@@ -505,14 +519,14 @@ public class ActionPanel extends JPanel {
 		gbc_lblTimeAccepted.gridx = 0;
 		gbc_lblTimeAccepted.gridy = 0;
 		pnlTimeAccepted.add(lblTimeAccepted, gbc_lblTimeAccepted);
-		
+
 		timePickerAcceptedTime = new TimePicker(timeSettingsAcceptedTime);
 		GridBagConstraints gbc_timePicker = new GridBagConstraints();
 		gbc_timePicker.fill = GridBagConstraints.BOTH;
 		gbc_timePicker.gridx = 1;
 		gbc_timePicker.gridy = 0;
 		pnlTimeAccepted.add(timePickerAcceptedTime, gbc_timePicker);
-		
+
 		chckbxCloseSignal = new JCheckBox("Затвори Сигнал");
 		chckbxCloseSignal.addComponentListener(new ComponentAdapter() {
 			@Override
@@ -533,8 +547,7 @@ public class ActionPanel extends JPanel {
 		chckbxCloseSignal.setFont(new Font("Century Gothic", Font.BOLD, 16));
 		chckbxCloseSignal.setVisible(false);
 		pnlAction.add(chckbxCloseSignal);
-		
-		
+
 		endTimeSettings.setDisplaySpinnerButtons(true);
 
 	}
@@ -566,7 +579,7 @@ public class ActionPanel extends JPanel {
 	public String getTxtPerformer() {
 		return txtPerformer.getText();
 	}
-	
+
 	public void requestFocusTxtPerformer() {
 		txtPerformer.requestFocus();
 	}
@@ -583,7 +596,7 @@ public class ActionPanel extends JPanel {
 
 		return sb.toString();
 	}
-	
+
 	public void requestFocusTxtActionDescription() {
 		txtActionDescription.requestFocus();
 	}
@@ -600,7 +613,7 @@ public class ActionPanel extends JPanel {
 
 		return sb.toString();
 	}
-	
+
 	public void requestFocusTxtActionRecommendation() {
 		txtActionRecommendation.requestFocus();
 	}
@@ -608,7 +621,7 @@ public class ActionPanel extends JPanel {
 	public String getTxtAccepted() {
 		return txtAccepted.getText();
 	}
-	
+
 	public void requestFocusTxtAccepted() {
 		txtAccepted.requestFocus();
 	}
@@ -616,7 +629,7 @@ public class ActionPanel extends JPanel {
 	public String getTxtActionDowntime() {
 		return txtActionDowntime.getText();
 	}
-	
+
 	public void requestFocusTxtActionDowntime() {
 		txtActionDowntime.requestFocus();
 	}
@@ -624,7 +637,7 @@ public class ActionPanel extends JPanel {
 	public String getTxtApproved() {
 		return txtApproved.getText();
 	}
-	
+
 	public void requestFocusTxtApproved() {
 		txtApproved.requestFocus();
 	}
@@ -632,7 +645,7 @@ public class ActionPanel extends JPanel {
 	public String getTxtActionAuthor() {
 		return txtActionAuthor.getText();
 	}
-	
+
 	public void requestFocusTxtActionAuthor() {
 		txtActionAuthor.requestFocus();
 	}
@@ -640,11 +653,11 @@ public class ActionPanel extends JPanel {
 	public void setTxtActionAuthor(String txtActionAuthor) {
 		this.txtActionAuthor.setText(txtActionAuthor);
 	}
-	
+
 	public void setCloseSignalVisibility(Boolean isVisible) {
 		chckbxCloseSignal.setVisible(isVisible);
 	}
-	
+
 	public boolean getCloseSignalStatus() {
 		return chckbxCloseSignal.isSelected();
 	}

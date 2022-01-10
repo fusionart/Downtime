@@ -2,9 +2,13 @@ package Controller;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -29,6 +33,13 @@ public class SaveToCsv {
 		} else {
 			newLine = System.lineSeparator() + ConcatDowntimeLine(downtime);
 		}
+		
+//		try {
+//			newLine = new String(newLine.getBytes("Cp1251"), "UTF-8");
+//		} catch (UnsupportedEncodingException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
 
 		boolean fileIsNotLocked = dtFile.renameTo(dtFile);
 
@@ -91,7 +102,9 @@ public class SaveToCsv {
 
 		if (fileIsNotLocked) {
 			try {
-				outputfile = new BufferedWriter(new FileWriter(Base.actionDbFile, true));
+				FileOutputStream fos = new FileOutputStream(Base.actionDbFile);
+			    OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
+				outputfile = new BufferedWriter(osw);
 
 				outputfile.append(newLine);
 			} catch (IOException e) {

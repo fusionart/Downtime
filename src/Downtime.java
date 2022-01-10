@@ -17,7 +17,7 @@ public class Downtime {
 		if (Base.isDowntimeDb && Base.isActionDb) {
 			new MainView();
 		} else {
-			JOptionPane.showMessageDialog(null, "База данни не е намерена. Обърнете се към администратор.", "Грешка", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Р‘Р°Р·Р°С‚Р° РґР°РЅРЅРё РЅРµ Рµ РЅР°РјРµСЂРµРЅР°. РњРѕР»СЏ СЃРІСЉСЂР¶РµС‚Рµ СЃРµ СЃ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂ.", "Р“СЂРµС€РєР°", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 }

@@ -13,6 +13,7 @@ import java.util.List;
 
 import Model.ActionModel;
 import Model.DowntimeModel;
+import Model.WorkshopModel;
 
 public class ReadFromCsv {
 
@@ -70,16 +71,14 @@ public class ReadFromCsv {
 	}
 
 	@SuppressWarnings("null")
-	public static List<String> ParseGenericCsv(String path) throws IOException {
+	public static WorkshopModel ParseGenericCsv(String path) throws IOException {
 
 		BufferedReader csvReader = null;
 		String row;
-		int i = 0;
-
-		List<String> stringArr = new ArrayList<String>();
+		WorkshopModel wm = new WorkshopModel();
 
 		try {
-			csvReader = new BufferedReader(new InputStreamReader(new FileInputStream(path), "UTF8"));
+			csvReader = new BufferedReader(new InputStreamReader(new FileInputStream(path), "Cp1251"));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -88,12 +87,11 @@ public class ReadFromCsv {
 		while ((row = csvReader.readLine()) != null) {
 			String[] data = row.split(";");
 
-			stringArr.add(data[0]);
+			wm.setWorkshopData(data);
 		}
 
 		csvReader.close();
 
-		return stringArr;
+		return wm;
 	}
-
 }

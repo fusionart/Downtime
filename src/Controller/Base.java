@@ -19,6 +19,7 @@ import org.ini4j.Profile.Section;
 
 import Model.ActionModel;
 import Model.DowntimeModel;
+import Model.WorkshopModel;
 
 public class Base {
 	public final static String DOT = ".";
@@ -35,7 +36,7 @@ public class Base {
 
 	// combobox
 	public static String workshopFile;
-	public static List<String> workshopData;
+	public static WorkshopModel workshopData;
 
 	// Labels
 	public final static String FRAME_CAPTION = "MONBAT";
@@ -77,6 +78,8 @@ public class Base {
 	public static String actionDbFile;
 	public static Boolean isDowntimeDb = true;
 	public static Boolean isActionDb = true;
+	public static String repairCardForm;
+	public static String saveRepairCardsAddress;
 
 	// passwords
 	public static String maintenancePassword;
@@ -236,5 +239,20 @@ public class Base {
 		sb.append(settings.node("combobox").get("extension", null));
 
 		workshopFile = sb.toString();
+		
+		sb = new StringBuilder();
+		sb.append(settings.node("repairCardForm").get("address", null));
+		sb.append(BACKSLASH);
+		sb.append(settings.node("repairCardForm").get("workshop", null));
+		sb.append(DOT);
+		sb.append(settings.node("repairCardForm").get("extension", null));
+
+		repairCardForm = sb.toString();
+		
+		sb = new StringBuilder();
+		sb.append(settings.node("saveRepairCardsAddress").get("address", null));
+		sb.append(BACKSLASH);
+		
+		saveRepairCardsAddress = sb.toString();
 	}
 }

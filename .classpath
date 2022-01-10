@@ -12,15 +12,16 @@
 	<classpathentry kind="lib" path="C:/Downtime/jars/batik-1.13/lib/xml-apis-ext-1.3.04.jar"/>
 	<classpathentry kind="lib" path="C:/Downtime/jars/batik-1.13/lib/xmlgraphics-commons-2.4.jar"/>
 	<classpathentry kind="lib" path="C:/Downtime/jars/batik-1.13/lib/batik-all-1.13.jar"/>
-	<classpathentry kind="lib" path="C:/Downtime/jars/poi-4.1.2/poi-ooxml-4.1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Downtime/jars/poi-4.1.2/poi-4.1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Downtime/jars/poi-4.1.2/lib/commons-collections4-4.4.jar"/>
-	<classpathentry kind="lib" path="C:/Downtime/jars/poi-4.1.2/ooxml-lib/xmlbeans-3.1.0.jar"/>
-	<classpathentry kind="lib" path="C:/Downtime/jars/poi-4.1.2/lib/commons-compress-1.19.jar"/>
-	<classpathentry kind="lib" path="C:/Downtime/jars/poi-4.1.2/poi-excelant-4.1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Downtime/jars/poi-4.1.2/poi-scratchpad-4.1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Downtime/jars/poi-4.1.2/poi-ooxml-schemas-4.1.2.jar"/>
 	<classpathentry kind="lib" path="C:/Downtime/jars/javax.mail.jar"/>
 	<classpathentry kind="lib" path="C:/Downtime/jars/activation.jar"/>
+	<classpathentry kind="lib" path="C:/Downtime/jars/poi 5.0/poi-5.0.0.jar"/>
+	<classpathentry kind="lib" path="C:/Downtime/jars/poi 5.0/poi-ooxml-5.0.0.jar"/>
+	<classpathentry kind="lib" path="C:/Downtime/jars/poi 5.0/poi-ooxml-full-5.0.0.jar"/>
+	<classpathentry kind="lib" path="C:/Downtime/jars/poi 5.0/poi-ooxml-lite-5.0.0.jar"/>
+	<classpathentry kind="lib" path="C:/Downtime/jars/poi 5.0/poi-ooxml-schemas-4.1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Downtime/jars/poi 5.0/poi-scratchpad-5.0.0.jar"/>
+	<classpathentry kind="lib" path="C:/Downtime/jars/poi 5.0/xmlbeans-4.0.0.jar"/>
+	<classpathentry kind="lib" path="C:/Downtime/jars/poi 5.0/commons-collections4-4.4.jar"/>
+	<classpathentry kind="lib" path="C:/Downtime/jars/poi 5.0/commons-compress-1.20.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

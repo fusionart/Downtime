@@ -5,6 +5,7 @@ import java.awt.GridBagConstraints;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -22,6 +23,7 @@ import com.github.lgooddatepicker.components.TimePickerSettings.TimeArea;
 
 import Controller.Base;
 import Controller.BaseMethods;
+import Controller.ExcelFile;
 import Controller.SaveToCsv;
 import Controller.SendMail;
 import Model.ActionModel;
@@ -37,9 +39,6 @@ import javax.swing.JRadioButton;
 import java.awt.GridLayout;
 import java.awt.Image;
 import javax.swing.JButton;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.IOException;
 
 import javax.swing.border.TitledBorder;
 import javax.swing.border.EtchedBorder;
@@ -64,7 +63,6 @@ public class DowntimeView {
 
 	private JFrame frmMain;
 	private static JTextField txtNumber;
-	private static JTextField txtFieldMachine;
 	private static JTextField txtNotified;
 	private static JTextField txtNotifier;
 	private static JTextField txtConfirm;
@@ -87,7 +85,9 @@ public class DowntimeView {
 	private static JCheckBox chckbxEnterAction;
 	private static Boolean isDowntimeLoaded;
 	private static JComboBox cboWorkshop;
+	private static JComboBox cboFieldMachine;
 	private ButtonGroup radioButtonGroup;
+	private JButton btnSavePrint;
 	/**
 	 * Launch the application.
 	 */
@@ -271,8 +271,18 @@ public class DowntimeView {
 		gbc_lblWorkshop.gridy = 0;
 		pnlWorkshop.add(lblWorkshop, gbc_lblWorkshop);
 
-		String[] arr = Base.workshopData.toArray(new String[Base.workshopData.size()]);
+		String[] arr = Base.workshopData.getWorkshopData().toArray(new String[Base.workshopData.getWorkshopData().size()]);
 		cboWorkshop = new JComboBox(arr);
+		cboWorkshop.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				List<String> workshopMachines = Base.workshopData.getWorkshopMachines(cboWorkshop.getSelectedIndex());
+				cboFieldMachine.removeAllItems();
+				workshopMachines.forEach((item) -> {
+					cboFieldMachine.addItem(item);
+				});
+				
+			}
+		});
 		cboWorkshop.setFont(Base.RADIO_BUTTON_FONT);
 		cboWorkshop.setForeground(Base.TEXT_FIELD_COLOR);
 		GridBagConstraints gbc_cboWorkshop = new GridBagConstraints();
@@ -295,21 +305,20 @@ public class DowntimeView {
 		JLabel lblFieldMachine = new JLabel("Участък/Машина");
 		lblFieldMachine.setFont(Base.DEFAULT_FONT);
 		GridBagConstraints gbc_lblFieldMachine = new GridBagConstraints();
+		gbc_lblFieldMachine.insets = new Insets(0, 0, 5, 0);
 		gbc_lblFieldMachine.anchor = GridBagConstraints.WEST;
-		gbc_lblFieldMachine.insets = new Insets(0, 0, 0, 5);
 		gbc_lblFieldMachine.gridx = 0;
 		gbc_lblFieldMachine.gridy = 0;
 		pnlFieldMachine.add(lblFieldMachine, gbc_lblFieldMachine);
-
-		txtFieldMachine = new JTextField();
-		txtFieldMachine.setFont(Base.DEFAULT_FONT);
-		txtFieldMachine.setForeground(Base.TEXT_FIELD_COLOR);
-		GridBagConstraints gbc_txtFieldMachine = new GridBagConstraints();
-		gbc_txtFieldMachine.fill = GridBagConstraints.BOTH;
-		gbc_txtFieldMachine.gridx = 0;
-		gbc_txtFieldMachine.gridy = 1;
-		pnlFieldMachine.add(txtFieldMachine, gbc_txtFieldMachine);
-		txtFieldMachine.setColumns(10);
+		
+		cboFieldMachine = new JComboBox();
+		cboFieldMachine.setFont(Base.RADIO_BUTTON_FONT);
+		cboFieldMachine.setForeground(Base.TEXT_FIELD_COLOR);
+		GridBagConstraints gbc_cboFieldMachine = new GridBagConstraints();
+		gbc_cboFieldMachine.fill = GridBagConstraints.BOTH;
+		gbc_cboFieldMachine.gridx = 0;
+		gbc_cboFieldMachine.gridy = 1;
+		pnlFieldMachine.add(cboFieldMachine, gbc_cboFieldMachine);
 
 		JPanel pnlNotified = new JPanel();
 		pnlNotified.setBackground(new Color(255, 255, 255, 0));
@@ -620,8 +629,10 @@ public class DowntimeView {
 				if (e.getStateChange() == ItemEvent.SELECTED) {
 					actionPanel.setVisible(true);
 					actionPanel.setCloseSignalVisibility(rdbtnSignal.isSelected());
+					btnSavePrint.setVisible(false);
 				} else {
 					actionPanel.setVisible(false);
+					btnSavePrint.setVisible(true);
 				}
 			}
 		});
@@ -630,71 +641,24 @@ public class DowntimeView {
 		chckbxEnterAction.setBounds(15, 625, 395, 25);
 		pnlDowntime.add(chckbxEnterAction);
 
+		btnSavePrint = new JButton("Запази и печат");
+		btnSavePrint.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				SaveDowntimeAndAction(true);
+			}
+		});
+
+		btnSavePrint.setBounds(825, 687, 160, 30);
+		btnSavePrint.setFont(Base.DEFAULT_FONT);
+		frmMain.getContentPane().add(btnSavePrint);
+
 		JButton btnSave = new JButton("Запази");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				SaveDowntimeAndAction(false);
 			}
 		});
-		btnSave.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				Base.LoadDowntimeDb();
-				Boolean isValidDowntime = null;
-				if (!isDowntimeLoaded && !chckbxEnterAction.isSelected()) {
-					isValidDowntime = ValidateDowntime();
-					if (isValidDowntime) {
-						DowntimeModel downtime = SaveDowntime();
-						SaveToCsv.SaveDowntime(downtime);
 
-						Base.LoadDowntimeDb();
-
-						frmMain.dispose();
-						new MainView();
-
-						if (Base.recipientsList.size() > 0) {
-							// create background thread for sending email
-							ExecutorService emailExecutor = Executors.newSingleThreadExecutor();
-							emailExecutor.execute(new Runnable() {
-								@Override
-								public void run() {
-									SendMail.SendEmail(downtime);
-								}
-							});
-							emailExecutor.shutdown();
-						}
-					}
-				}
-
-				if (!isDowntimeLoaded && chckbxEnterAction.isSelected()) {
-					isValidDowntime = ValidateDowntime();
-					if (ValidateAction() && isValidDowntime) {
-						DowntimeModel downtime = SaveDowntime();
-						SaveToCsv.SaveDowntime(downtime);
-
-						ActionModel action = SaveAction();
-						SaveToCsv.SaveAction(action);
-
-						Base.LoadDowntimeDb();
-						Base.LoadActionDb();
-
-						frmMain.dispose();
-						new MainView();
-					}
-				}
-
-				if (isDowntimeLoaded) {
-					if (ValidateAction()) {
-						ActionModel action = SaveAction();
-						SaveToCsv.SaveAction(action);
-
-						Base.LoadActionDb();
-
-						frmMain.dispose();
-						new MainView();
-					}
-				}
-			}
-		});
 		btnSave.setFont(Base.DEFAULT_FONT);
 		btnSave.setBounds(995, 687, 150, 30);
 		frmMain.getContentPane().add(btnSave);
@@ -712,6 +676,68 @@ public class DowntimeView {
 
 		SetBackgroundPicture();
 		frmMain.setVisible(true);
+	}
+
+	private void SaveDowntimeAndAction(Boolean printReport) {
+		Base.LoadDowntimeDb();
+		Boolean isValidDowntime = null;
+		if (!isDowntimeLoaded && !chckbxEnterAction.isSelected()) {
+			isValidDowntime = ValidateDowntime();
+			if (isValidDowntime) {
+				DowntimeModel downtime = SaveDowntime();
+				SaveToCsv.SaveDowntime(downtime);
+
+				if (printReport) {
+					ExcelFile.CreateRepairCard(downtime);
+				}
+
+				Base.LoadDowntimeDb();
+
+				frmMain.dispose();
+				new MainView();
+
+				if (Base.recipientsList.size() > 0) {
+					// create background thread for sending email
+					ExecutorService emailExecutor = Executors.newSingleThreadExecutor();
+					emailExecutor.execute(new Runnable() {
+						@Override
+						public void run() {
+							SendMail.SendEmail(downtime);
+						}
+					});
+					emailExecutor.shutdown();
+				}
+			}
+		}
+
+		if (!isDowntimeLoaded && chckbxEnterAction.isSelected()) {
+			isValidDowntime = ValidateDowntime();
+			if (ValidateAction() && isValidDowntime) {
+				DowntimeModel downtime = SaveDowntime();
+				SaveToCsv.SaveDowntime(downtime);
+
+				ActionModel action = SaveAction();
+				SaveToCsv.SaveAction(action);
+
+				Base.LoadDowntimeDb();
+				Base.LoadActionDb();
+
+				frmMain.dispose();
+				new MainView();
+			}
+		}
+
+		if (isDowntimeLoaded) {
+			if (ValidateAction()) {
+				ActionModel action = SaveAction();
+				SaveToCsv.SaveAction(action);
+
+				Base.LoadActionDb();
+
+				frmMain.dispose();
+				new MainView();
+			}
+		}
 	}
 
 	protected boolean ValidateAction() {
@@ -835,11 +861,10 @@ public class DowntimeView {
 			return false;
 		}
 
-		if (txtFieldMachine.getText().equals("")) {
-			JOptionPane.showMessageDialog(null, "Въведете Участък/Машина", "Грешка", JOptionPane.INFORMATION_MESSAGE);
-			txtFieldMachine.requestFocus();
-			return false;
-		}
+//		if (cboFieldMachine.getSelectedIndex() == 0) {
+//			JOptionPane.showMessageDialog(null, "Изберете Участък/Машина", "Грешка", JOptionPane.INFORMATION_MESSAGE);
+//			return false;
+//		}
 
 		if (txtNotified.getText().equals("")) {
 			JOptionPane.showMessageDialog(null, "Въведете Уведомен", "Грешка", JOptionPane.INFORMATION_MESSAGE);
@@ -924,10 +949,17 @@ public class DowntimeView {
 				super.paint(g);
 			}
 		});
-
-		txtFieldMachine.setText(dtm.getFieldMachine());
-		txtFieldMachine.setEnabled(false);
-		txtFieldMachine.setDisabledTextColor(Color.gray);
+		
+		cboFieldMachine.setEditable(true);
+		cboFieldMachine.getEditor().setItem(dtm.getFieldMachine());
+		cboFieldMachine.setEnabled(false);
+		cboFieldMachine.setRenderer(new DefaultListCellRenderer() {
+			@Override
+			public void paint(Graphics g) {
+				setForeground(Color.gray);
+				super.paint(g);
+			}
+		});
 
 		rdbtnSignal.setSelected(dtm.isSignal());
 		rdbtnSignal.setEnabled(false);
@@ -970,6 +1002,8 @@ public class DowntimeView {
 
 		chckbxEnterAction.setSelected(true);
 		chckbxEnterAction.setEnabled(false);
+		
+		btnSavePrint.setVisible(false);
 
 		actionPanel.setVisible(true);
 
@@ -1014,7 +1048,7 @@ public class DowntimeView {
 		downtime.setEntryDate(cboEntryDate.getDate());
 		downtime.setEntryTime(cboEntryTime.getTime());
 		downtime.setWorkshop(cboWorkshop.getSelectedItem().toString());
-		downtime.setFieldMachine(txtFieldMachine.getText());
+		downtime.setFieldMachine(cboFieldMachine.getSelectedItem().toString());
 		downtime.setNotified(txtNotified.getText());
 		downtime.setNotifier(txtNotifier.getText());
 		downtime.setConfirm(txtConfirm.getText());

@@ -1,6 +1,9 @@
 package Controller;
 
 import java.awt.Component;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -20,7 +23,7 @@ public class BaseMethods {
 	    try {
 	        int d = Integer.parseInt(s);
 	    } catch (NumberFormatException nfe) {
-	    	JOptionPane.showMessageDialog(null, "Моля, въведете число за номер", "Грешка", JOptionPane.INFORMATION_MESSAGE);
+	    	JOptionPane.showMessageDialog(null, "Моля, въведете число.", "Грешка", JOptionPane.INFORMATION_MESSAGE);
 	        return false;
 	    }
 	    return true;
@@ -31,13 +34,13 @@ public class BaseMethods {
 			return true;
 		}
 		
-		JOptionPane.showMessageDialog(null, "Номер " + s + " не е намерен", "Грешка", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, "Номер " + s + " не е намерен.", "Грешка", JOptionPane.INFORMATION_MESSAGE);
 		return false;
 	}
 	
 	public static Boolean CheckIfActionNumberExists(String s) {
 		if (Base.actionDb.containsKey(Integer.parseInt(s))) {
-			JOptionPane.showMessageDialog(null, "За номер " + s + " има въведено Действие", "Грешка", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "За номер " + s + " има въведено Действие.", "Грешка", JOptionPane.INFORMATION_MESSAGE);
 			return true;
 		}
 		
@@ -46,7 +49,7 @@ public class BaseMethods {
 	
 	public static Boolean CheckIfNegative(String s) {
 		if (Integer.parseInt(s) <=0) {
-			JOptionPane.showMessageDialog(null, "Моля, въведете число по-голямо от 0 за номер", "Грешка", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Моля, въведете число по-голямо от 0 за номер.", "Грешка", JOptionPane.INFORMATION_MESSAGE);
 			return true;
 		}
 		
@@ -63,6 +66,25 @@ public class BaseMethods {
 		ActionModel actm = Base.actionDb.get(Integer.parseInt(s));
 		
 		return actm;
+	}
+	
+	public static String FormatDate(LocalDate date) {
+		String formattedDate = null;
+		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+		
+		if (date != null) {
+			formattedDate = date.format(dateFormat);
+		}
+		
+		return formattedDate;
+	}
+
+	public static String FormatTime(LocalTime time) {
+		DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+		String formattedTime = time.format(timeFormat);
+
+		return formattedTime;
 	}
 	
 	public static String ActionName(DowntimeModel dtm) {

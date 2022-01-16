@@ -35,7 +35,7 @@ public class DowntimeModel {
 	}
 	
 	public DowntimeModel(String[] data) {
-		this.Number = Integer.parseInt(data[0]);
+		this.Number = Integer.valueOf(data[0]);
 		this.EntryDate = LocalDate.parse(data[1], dateFormat);
 		this.EntryTime = LocalTime.parse(data[2]);
 		this.Workshop = data[3];

@@ -102,9 +102,7 @@ public class SaveToCsv {
 
 		if (fileIsNotLocked) {
 			try {
-				FileOutputStream fos = new FileOutputStream(Base.actionDbFile);
-			    OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
-				outputfile = new BufferedWriter(osw);
+				outputfile = new BufferedWriter(new FileWriter(Base.actionDbFile, true));
 
 				outputfile.append(newLine);
 			} catch (IOException e) {
